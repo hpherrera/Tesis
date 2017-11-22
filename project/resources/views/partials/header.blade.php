@@ -54,10 +54,24 @@
 
 				<li class="dropdown notifications-menu">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<span class="hidden-xs">{{ Auth::user()->name }}</span>
+						<span class="hidden-xs">{{ Auth::user()->email }}</span>
 					</a>
 					<ul class="dropdown-menu">
-						<li class="header text-center">Rol: Profesor Guía</li>
+						<li class="header text-center">
+							@if(Auth::user()->rol_id == 1)
+								<span class="hidden-xs">Administrador</span>
+							@elseif(Auth::user()->rol_id == 2)
+								<span class="hidden-xs">Funcionario</span>
+							@elseif(Auth::user()->rol_id == 3)
+								<span class="hidden-xs">Profesor Guía</span>
+							@elseif(Auth::user()->rol_id == 4)
+								<span class="hidden-xs">Profesor Curso</span>
+							@elseif(Auth::user()->rol_id == 5)
+								<span class="hidden-xs">Estudiante</span>
+							@elseif(Auth::user()->rol_id == 6)
+								<span class="hidden-xs">Invitado</span>
+							@endif
+						</li>
 						<li style="height: auto;">
 							<ul class="menu" style="height: auto;">
                             	<li>

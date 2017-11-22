@@ -4,7 +4,7 @@
 <div class="container">
 	<section class="content-header">
 		<h1>
-			Recinto
+			Proyecto
 			<small>Registrar</small>
 		</h1>
 		<ol class="breadcrumb">
@@ -43,8 +43,8 @@
 							<div class="form-group has-feedback {{ $errors->has('estudiante_id') ? 'has-error': '' }}">
 								<label>Estudiante</label>
 								<select class="form-control" name="estudiante_id">
-									@foreach($estudiantes as $estudiante)
-									<option value="{{ $estudiante->id }}">{{ $estudiante->nombre() }}</option>
+									@foreach($personas as $persona)
+									<option value="{{ $persona->persona->id }}">{{ $persona->persona->nombres}} {{$persona->persona->apellidos }}</option>
 									@endforeach
 								</select>
 								@if ($errors->has('estudiante_id'))

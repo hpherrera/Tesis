@@ -15,6 +15,7 @@ class CreateTipoInvitadosTable extends Migration
     {
         Schema::create('tipo_invitados', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nombre');
             $table->timestamps();
         });
     }

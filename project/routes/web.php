@@ -18,9 +18,14 @@ Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Proyecto
-Route::get('proyecto/index', 'ProyectoController@index');
+Route::get('/index', 'ProyectoController@index');
 Route::get('proyecto/create', 'ProyectoController@create');
 Route::post('proyecto', 'ProyectoController@store'); 
 Route::get('proyecto/{proyecto}/edit', 'ProyectoController@edit');
 Route::post('proyecto/update/{proyecto}', 'ProyectoController@update');
 Route::post('proyecto/delete/{proyecto}','ProyectoController@delete');
+
+//Persona
+Route::get('persona/index', 'PersonaController@index');
+Route::get('persona/create', 'PersonaController@create');
+Route::post('persona', 'PersonaController@store'); 

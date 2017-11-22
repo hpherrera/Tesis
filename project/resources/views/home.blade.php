@@ -6,7 +6,7 @@
 <section class="content-header">
 	<h1>
 		Home
-		<small>Subtitutlo del home</small>
+		<small>Subtitulo del home</small>
 	</h1>
 	<ol class="breadcrumb">
 		<li class="active"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>

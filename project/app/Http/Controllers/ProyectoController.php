@@ -10,6 +10,8 @@ use App\TipoProyecto;
 use App\EstadoProyecto;
 use App\Estudiante;
 use App\Area;
+use App\Persona;
+use App\User;
 
 class ProyectoController extends Controller
 {
@@ -27,12 +29,13 @@ class ProyectoController extends Controller
 
     public function create()
     {
-    	$estudiantes = Estudiante::all();
+    	$personas = User::where('rol_id',"=",5)->get();
         $tipos = TipoProyecto::all();
         $estados = EstadoProyecto::all();
         $areas = Area::all();
 
-        return view('proyecto.create', compact('estudiantes','tipos','estados','areas'));
+        //dd($estudiantes);
+        return view('proyecto.create', compact('personas','tipos','estados','areas'));
     }
 
     public function store(Request $request)
@@ -46,10 +49,11 @@ class ProyectoController extends Controller
             'area_id' => 'required|numeric'
         ]);
 
+        //dd($request);
 
         if ($validator->fails()) 
         {
-        	session()->flash('title', '¡Éxito!');
+        	session()->flash('title', '¡Error!');
         	session()->flash('message', 'Existieron errores!');
         	session()->flash('icon', 'fa-check');
         	session()->flash('type', 'danger');
@@ -72,7 +76,7 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('proyecto/index');        
+        return redirect('index');        
     }
 
     public function edit(Proyecto $proyecto)
@@ -92,7 +96,8 @@ class ProyectoController extends Controller
             'titulo' => 'required|string|min:3|max:100',
             'tipo_id' => 'required|numeric',
             'estado_id' => 'required|numeric',
-            'area_id' => 'required|numeric'
+            'area_id' => 'required|numeric',
+            'estudiante_id' => 'required|numeric'
         ]);
 
 
@@ -102,7 +107,7 @@ class ProyectoController extends Controller
         	session()->flash('message', 'Existieron errores!');
         	session()->flash('icon', 'fa-check');
         	session()->flash('type', 'danger');
-            return redirect('proyecto/create')->withErrors($validator)->withInput();
+            return redirect('proyecto/edit')->withErrors($validator)->withInput();
         }
 
 

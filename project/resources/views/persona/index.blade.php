@@ -5,7 +5,7 @@
 <div class="container">
 	<section class="content-header">
 		<h1>
-			Proyecto
+			Usuarios
 			<small>Todos</small>
 		</h1>
 		<ol class="breadcrumb">
@@ -30,27 +30,35 @@
 				<table id="table" class="table table-striped">
 					<thead>
 						<tr>
-							<th>Título</th>
-							<th>Alumno</th>
-							<th>Tipo</th>
-							<th>Estado</th>
-							<th>Progreso %</th>
-							<th>Area</th>
+							<th>Nombre</th>
+							<th>Email</th>
+							<th>Rol</th>
 							<th class="no-sort">Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($proyectos as $proyecto)
+						@foreach($personas as $persona)
 						<tr>
-							<td>{{ ucfirst($proyecto->titulo) }}</td>
-							<td>{{ $proyecto->persona->nombre() }}
-							<td>{{ $proyecto->tipo->nombre() }}</td>
-							<td>{{ $proyecto->estado->nombre() }}</td>
-							<td>{{ ucfirst($proyecto->progreso) }}</td>
-							<td>{{ $proyecto->area->nombre()}}</td>
+							<td>{{ $persona->nombre() }}</td>
+							<td>{{ $persona->email }}
 							<td>
-								<a href="/proyecto/{{ $proyecto->id }}/edit" class="btn btn-warning btn-xs">Editar</a>
-								<button onclick="Eliminar('{{ $proyecto->id }}')" class="btn btn-danger btn-xs">Eliminar</button>
+							@if( $persona->user->rol_id  == 1)
+								<span class="hidden-xs">Administrador</span>
+							@elseif( $persona->user->rol_id  == 2)
+								<span class="hidden-xs">Funcionario</span>
+							@elseif( $persona->user->rol_id  == 3)
+								<span class="hidden-xs">Profesor Guía</span>
+							@elseif( $persona->user->rol_id  == 4)
+								<span class="hidden-xs">Profesor Curso</span>
+							@elseif( $persona->user->rol_id  == 5)
+								<span class="hidden-xs">Estudiante</span>
+							@elseif( $persona->user->rol_id  == 6)
+								<span class="hidden-xs">Invitado</span>
+							@endif
+							</td>
+							<td>
+								<a href="/persona/{{ $persona->id }}/edit" class="btn btn-warning btn-xs">Editar</a>
+								<button onclick="Eliminar('{{ $persona->id }}')" class="btn btn-danger btn-xs">Eliminar</button>
 							</td>
 						</tr>
 						@endforeach
@@ -71,12 +79,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Eliminar Proyecto</h4>
+				<h4 class="modal-title">Eliminar Usuario</h4>
 			</div>
 			<form id="form-delete" method="POST" role="form">
 			{{ csrf_field() }}
 			<div class="modal-body">
-				<p> Desea eliminar el proyecto?</p>
+				<p> Desea eliminar el Usuario?</p>
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-danger pull-left" >Si, eliminar</button>
@@ -99,7 +107,7 @@
 
 <script>
 	function Eliminar(id){
-		$('#form-delete').attr('action', '/proyecto/delete/'+id);
+		$('#form-delete').attr('action', '/persona/delete/'+id);
 		$('#DeleteModal').modal('toggle');
 	};
 </script>

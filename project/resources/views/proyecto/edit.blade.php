@@ -44,11 +44,7 @@
 								<label>Estudiante</label>
 								<select class="form-control" name="estudiante_id">
 									@foreach($estudiantes as $estudiante)
-										@if($estudiante->id == $proyecto->estudiante_id)
-											<option value="{{ $estudiante->id }}" selected="">{{ $estudiante->nombre() }}</option>
-										@else
-											<option value="{{ $estudiante->id }}">{{ $estudiante->nombre() }}</option>
-										@endif
+									<option value="{{ $estudiante->id }}">{{ $estudiante->nombre() }}</option>
 									@endforeach
 								</select>
 								@if ($errors->has('estudiante_id'))
