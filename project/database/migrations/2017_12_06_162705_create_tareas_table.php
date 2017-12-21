@@ -14,7 +14,11 @@ class CreateTareasTable extends Migration
     public function up()
     {
         Schema::create('tareas', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id')->index();
+            $table->string('nombre');
+            $table->timestamp('fecha_limite')->nullable()->default(null);
+            $table->string('comentario');
+            $table->bigInteger('hito_id')->index();
             $table->timestamps();
         });
     }

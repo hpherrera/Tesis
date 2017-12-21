@@ -5,9 +5,10 @@
 <div class="container">
 	<section class="content-header">
 		<h1>
-			Proyecto
+			Hitos
 			<small>Todos</small>
 		</h1>
+		<hr>
 		<ol class="breadcrumb">
 			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
 			<li class="active">Todos</li>
@@ -24,51 +25,45 @@
 		@endif
 		<div class="box box-primary">
 			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Proyectos</h3>
+				<h3 class="box-title">Todos los Hitos</h3>
 			</div>
 			<div class="box-body">
 				<table id="table" class="table table-striped">
 					<thead>
 						<tr>
-							<th>Título</th>
-							<th>Alumno</th>
-							<th>Tipo</th>
-							<th>Estado</th>
+							<th>Nombre</th>
+							<th>Fecha Inicio</th>
+							<th>Fecha Termino</th>
 							<th>Progreso %</th>
-							<th>Area</th>
-							<th class="no-sort">Acciones</th>
+							<th class="no-sort"></th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($proyectos as $proyecto)
+						@foreach($hitos as $hito)
 						<tr>
-							<td>{{ ucfirst($proyecto->titulo) }}</td>
-							<td>{{ $proyecto->persona->nombre() }}
-							<td>{{ $proyecto->tipo->nombre() }}</td>
-							<td>{{ $proyecto->estado->nombre() }}</td>
-							<td>{{ ucfirst($proyecto->progreso) }}</td>
-							<td>{{ $proyecto->area->nombre()}}</td>
+							<td>{{ ucfirst($hito->nombre) }}</td>
+							<td>{{ ucfirst($hito->fecha_inicio) }}
+							<td>{{ ucfirst($hito->fecha_termino) }}</td>
+							<td>0 %</td>
 							<td>
 								<div class="btn-group">
-                          <button type="button" class="btn btn-info btn-xs">Acciones</button>
-                          <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="/proyecto/{{ $proyecto->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
-                            <li> <a onclick="Eliminar('{{ $proyecto->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
-                            <li><a href="/proyecto/{{ $proyecto->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
-                          </ul>
-                       </div> 
+					                <button type="button" class="btn btn-info btn-xs">Acciones</button>
+					                <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+					                  <span class="caret"></span>
+					                  <span class="sr-only">Toggle Dropdown</span>
+					                </button>
+					                <ul class="dropdown-menu" role="menu">
+					                  <li><a href="/hito/{{ $hito->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
+					                  <li> <a onclick="Eliminar('{{ $hito->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
+					                  <li><a href="/hito/{{ $hito->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
+					                  <!--<li><a href="/tarea/create/{{ $hito->id }}"> <i class="fa fa-save"></i>Agregar Tarea</a></li>-->
+					                </ul>
+					              </div> 
 							</td>
 						</tr>
 						@endforeach
 					</tbody>
 				</table>
-			</div>
-			<div class="box-footer">
-				<a href="/" class="btn btn-default btn-flat">Volver</a>
 			</div>
 		</div>
 	</section>
@@ -81,12 +76,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Eliminar Proyecto</h4>
+				<h4 class="modal-title">Eliminar Hito</h4>
 			</div>
 			<form id="form-delete" method="POST" role="form">
 			{{ csrf_field() }}
 			<div class="modal-body">
-				<p> Desea eliminar el proyecto?</p>
+				<p> Desea eliminar el hito?</p>
+				<p> Recuerde que al eliminar el hito se eliminaran las tareas y entregables asociadas a este.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-danger pull-left" >Si, eliminar</button>
@@ -103,19 +99,26 @@
 
 @section('style')
 <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}"/>
+<style type="text/css">
+  hr { 
+    border: 1px solid #BDBDBD; 
+    border-radius: 200px /8px; 
+    height: 0px; 
+    text-align: center; 
+  } 
+
+  .vl {
+    border-left: 0.1px solid #BDBDBD;
+    height: 600px;
+  }
+</style>
 @endsection('style')
 
 @section('script')
 
 <script>
-  $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
-
-<script>
 	function Eliminar(id){
-		$('#form-delete').attr('action', '/proyecto/delete/'+id);
+		$('#form-delete').attr('action', '/hito/delete/'+id);
 		$('#DeleteModal').modal('toggle');
 	};
 </script>

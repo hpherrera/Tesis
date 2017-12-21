@@ -1,5 +1,5 @@
 <header class="main-header">
-	<a href="/" class="logo">
+	<a href="#" class="logo">
 		<span class="logo-mini"><b>SGC</b></span>
 		<span class="logo-lg"><b>SGC</b> Proyectos</span>
 	</a>

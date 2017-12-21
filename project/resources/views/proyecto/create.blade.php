@@ -96,8 +96,7 @@
 					</div>
 				</div>
 				<div class="box-footer">
-					<a href="/" class="btn btn-default btn-flat">Volver</a>
-					<button type="submit" class="btn btn-success btn-flat pull-right">Registrar Proyecto </button>
+					<button type="submit" class="btn btn-success btn-flat pull-right"><i class="fa fa-save"></i> Guardar </button>
 				</div>
 			</form>
 		</div>

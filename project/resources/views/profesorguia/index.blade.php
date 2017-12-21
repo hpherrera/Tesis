@@ -8,6 +8,7 @@
 			Proyecto
 			<small>Todos</small>
 		</h1>
+		<hr>
 		<ol class="breadcrumb">
 			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
 			<li class="active">Todos</li>
@@ -22,36 +23,32 @@
 			{{ session('message') }}
 		</div>
 		@endif
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Proyectos</h3>
-			</div>
-			<div class="box-body">
-				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Título</th>
-							<th>Alumno</th>
-							<th>Tipo</th>
-							<th>Estado</th>
-							<th>Progreso %</th>
-							<th>Area</th>
-							<th class="no-sort">Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($proyectos as $proyecto)
-						<tr>
-							<td>{{ ucfirst($proyecto->titulo) }}</td>
-							<td>{{ $proyecto->persona->nombre() }}
-							<td>{{ $proyecto->tipo->nombre() }}</td>
-							<td>{{ $proyecto->estado->nombre() }}</td>
-							<td>{{ ucfirst($proyecto->progreso) }}</td>
-							<td>{{ $proyecto->area->nombre()}}</td>
-							<td>
-								<div class="btn-group">
-                          <button type="button" class="btn btn-info btn-xs">Acciones</button>
-                          <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">Todos los Proyectos</h3>
+					</div>
+					<div class="box-body">
+						<table id="table" class="table table-striped">
+							<thead>
+								<tr>
+									<th>Título</th>
+									<th>Alumno</th>
+									<th>Estado</th>
+									<th class="no-sort">Acciones</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach($proyectos as $proyecto)
+								<tr>
+									<td>{{ ucfirst($proyecto->titulo) }}</td>
+									<td>{{ $proyecto->persona->nombre() }}
+									<td>{{ $proyecto->estado->nombre() }}</td>
+									<td>
+										<div class="btn-group">
+                    
+                          <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" title="Acciones">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                           </button>
@@ -61,15 +58,28 @@
                             <li><a href="/proyecto/{{ $proyecto->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
                           </ul>
                        </div> 
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
+									</td>
+								</tr>
+								@endforeach
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-			<div class="box-footer">
-				<a href="/" class="btn btn-default btn-flat">Volver</a>
-			</div>
+
+			<div class="col-md-4">
+          <div class="vl col-md-1"></div>
+          <div class="row">
+            <h4 align="CENTER">CALENDARIO</h4>
+              <div id="calendario" class="col-md-10"></div>
+            <div class="col-md-10"><hr></div>
+            <h4 align="CENTER">ACTIVIDAD RECIENTE</h4>
+            <br>
+            <div class="col-md-10"><i class="fa fa-comment"></i><b> Comentario:</b> Tarea 2</div>
+            <br>
+            <div class="col-md-10"><i class="fa fa-comment"></i><b> Comentario:</b> Tarea 3</div>
+          </div>
+        </div>
 		</div>
 	</section>
 </div>
@@ -102,6 +112,19 @@
 
 
 @section('style')
+<style type="text/css">
+  hr { 
+    border: 1px solid #BDBDBD; 
+    border-radius: 200px /8px; 
+    height: 0px; 
+    text-align: center; 
+  } 
+
+  .vl {
+    border-left: 0.1px solid #BDBDBD;
+    height: 700px;
+  }
+</style>
 <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}"/>
 @endsection('style')
 
@@ -162,5 +185,11 @@
 			},
 		});
 	});
+</script>
+
+<script>
+  $('#calendario').fullCalendar({
+        height: 300
+  });
 </script>
 @endsection

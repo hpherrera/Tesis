@@ -44,7 +44,11 @@
 								<label>Estudiante</label>
 								<select class="form-control" name="estudiante_id">
 									@foreach($estudiantes as $estudiante)
-									<option value="{{ $estudiante->id }}">{{ $estudiante->nombre() }}</option>
+										@if($estudiante->id == $proyecto->estudiante_id)
+											<option value="{{ $estudiante->id }}" selected="">{{ $estudiante->persona->nombres }}</option>
+										@else
+											<option value="{{ $estudiante->id }}">{{ $estudiante->persona->nombres }}</option>
+										@endif
 									@endforeach
 								</select>
 								@if ($errors->has('estudiante_id'))
@@ -108,8 +112,7 @@
 					</div>
 				</div>
 				<div class="box-footer">
-					<a href="/" class="btn btn-default btn-flat">Volver</a>
-					<button type="submit" class="btn btn-warning btn-flat pull-right">Editar Proyecto</button>
+					<button type="submit" class="btn btn-warning btn-flat pull-right"><i class="fa fa-pencil"></i>Editar</button>
 				</div>
 			</form>
 		</div>

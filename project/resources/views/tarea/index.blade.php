@@ -5,12 +5,13 @@
 <div class="container">
 	<section class="content-header">
 		<h1>
-			Proyecto
-			<small>Todos</small>
+			Tareas
+			<small>Todas</small>
 		</h1>
+		<hr>
 		<ol class="breadcrumb">
 			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Todos</li>
+			<li class="active">Todas</li>
 		</ol>
 	</section>
 
@@ -22,55 +23,49 @@
 			{{ session('message') }}
 		</div>
 		@endif
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Proyectos</h3>
-			</div>
-			<div class="box-body">
-				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Título</th>
-							<th>Alumno</th>
-							<th>Tipo</th>
-							<th>Estado</th>
-							<th>Progreso %</th>
-							<th>Area</th>
-							<th class="no-sort">Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($proyectos as $proyecto)
-						<tr>
-							<td>{{ ucfirst($proyecto->titulo) }}</td>
-							<td>{{ $proyecto->persona->nombre() }}
-							<td>{{ $proyecto->tipo->nombre() }}</td>
-							<td>{{ $proyecto->estado->nombre() }}</td>
-							<td>{{ ucfirst($proyecto->progreso) }}</td>
-							<td>{{ $proyecto->area->nombre()}}</td>
-							<td>
-								<div class="btn-group">
-                          <button type="button" class="btn btn-info btn-xs">Acciones</button>
-                          <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="/proyecto/{{ $proyecto->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
-                            <li> <a onclick="Eliminar('{{ $proyecto->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
-                            <li><a href="/proyecto/{{ $proyecto->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
-                          </ul>
-                       </div> 
+				<div class="box box-primary">
+					<div class="box-header with-border">
+					<h3 class="box-title">Tareas</h3>
+					</div>
+					<div class="box-body">
+						<table id="table" class="table table-striped">
+						<thead>
+						  <tr>
+						    <th>Nombre</th>
+						    <th>Fecha Termino</th>
+						    <th>Comentario</th>
+						    <th>Hito</th>
+						    <th class="no-sort"></th>
+						  </tr>
+						</thead>
+						<tbody>
+						  @foreach($tareas as $tarea)
+						    <tr>
+						      <td>{{ ucfirst($tarea->nombre) }}</td>
+						      <td>{{ ucfirst($tarea->fecha_limite)  }}
+						      <td>{{ ucfirst($tarea->comentario)  }}</td>
+						      <td>{{ $tarea->hito->nombre() }}
+						      <td>
+						      	<div class="btn-group">
+					                <button type="button" class="btn btn-info btn-xs">Acciones</button>
+					                <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+					                  <span class="caret"></span>
+					                  <span class="sr-only">Toggle Dropdown</span>
+					                </button>
+					                <ul class="dropdown-menu" role="menu">
+					                  <li><a href="/tarea/{{ $tarea->id }}/edit""><i class="fa fa-pencil"></i> Editar </a></li>
+					                  <li> <a onclick="Eliminar('{{ $tarea->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
+					                  <li><a href="/tarea/{{ $tarea->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
+					                </ul>
+					             </div> 
 							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-			<div class="box-footer">
-				<a href="/" class="btn btn-default btn-flat">Volver</a>
-			</div>
-		</div>
+						    </tr>
+						  @endforeach
+						</tbody>
+						</table>
+					</div>
+				</div>
+	
 	</section>
 </div>
 @section('modal')
@@ -81,12 +76,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Eliminar Proyecto</h4>
+				<h4 class="modal-title">Eliminar Tarea</h4>
 			</div>
 			<form id="form-delete" method="POST" role="form">
 			{{ csrf_field() }}
 			<div class="modal-body">
-				<p> Desea eliminar el proyecto?</p>
+				<p> Desea eliminar la tarea?</p>
+				<p> Recuerde que al eliminar la tarea se eliminaran los entregables asociadas a esta.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-danger pull-left" >Si, eliminar</button>
@@ -102,20 +98,27 @@
 
 
 @section('style')
+<style type="text/css">
+  hr { 
+    border: 1px solid #BDBDBD; 
+    border-radius: 200px /8px; 
+    height: 0px; 
+    text-align: center; 
+  } 
+
+  .vl {
+    border-left: 0.1px solid #BDBDBD;
+    height: 600px;
+  }
+</style>
 <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}"/>
 @endsection('style')
 
 @section('script')
 
 <script>
-  $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
-
-<script>
 	function Eliminar(id){
-		$('#form-delete').attr('action', '/proyecto/delete/'+id);
+		$('#form-delete').attr('action', '/tarea/delete/'+id);
 		$('#DeleteModal').modal('toggle');
 	};
 </script>

@@ -109,7 +109,7 @@ class PersonaController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('/');        
+        return redirect('/persona/index');        
     }
 
 }

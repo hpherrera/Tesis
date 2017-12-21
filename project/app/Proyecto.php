@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proyecto extends Model
 {
-    protected $fillable = ['titulo', 'alumno_id','tipo_id', 'estado_id','progreso','area_id','profesorGuia_id'];
+    protected $fillable = ['titulo', 'estudiante_id','tipo_id', 'estado_id','progreso','area_id','profesorGuia_id'];
 
     public function estado()
     {
@@ -20,7 +20,7 @@ class Proyecto extends Model
 
     public function persona()
     {
-    	return $this->belongsTo('App\Persona', 'alumno_id', 'id');
+    	return $this->belongsTo('App\Persona', 'estudiante_id', 'id');
     }
 
     public function area()

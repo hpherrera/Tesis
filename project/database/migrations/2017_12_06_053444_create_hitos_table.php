@@ -14,7 +14,11 @@ class CreateHitosTable extends Migration
     public function up()
     {
         Schema::create('hitos', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id')->index();
+            $table->string('nombre');
+            $table->timestamp('fecha_inicio')->nullable()->default(null);
+            $table->timestamp('fecha_termino')->nullable()->default(null);
+            $table->bigInteger('proyecto_id')->index();
             $table->timestamps();
         });
     }

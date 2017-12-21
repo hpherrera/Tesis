@@ -12,6 +12,7 @@ use App\Estudiante;
 use App\Area;
 use App\Persona;
 use App\User;
+use App\Hito;
 
 class ProyectoController extends Controller
 {
@@ -29,18 +30,27 @@ class ProyectoController extends Controller
 
     public function create()
     {
-    	$personas = User::where('rol_id',"=",5)->get();
+    	$personas = array();
+        $estudiantes = Estudiante::all();
+        foreach ($estudiantes as $estudiante) {
+            if($estudiante->ocupado == 0)
+            {
+                $persona = User::find($estudiante->persona_id);
+                array_push($personas, $persona);
+            }
+        }
+ 
         $tipos = TipoProyecto::all();
         $estados = EstadoProyecto::all();
         $areas = Area::all();
 
-        //dd($estudiantes);
+        //dd($personas);
         return view('proyecto.create', compact('personas','tipos','estados','areas'));
     }
 
     public function store(Request $request)
     {
-
+        //dd($request);
         $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|min:3|max:100',
             'estudiante_id' => 'required|numeric',
@@ -62,7 +72,7 @@ class ProyectoController extends Controller
 
         Proyecto::create([
             'titulo' => $request['titulo'],
-            'alumno_id' => $request['estudiante_id'],
+            'estudiante_id' => $request['estudiante_id'],
             'tipo_id' => $request['tipo_id'],
             'estado_id' => $request['estado_id'],
             'progreso' => 0,
@@ -76,12 +86,12 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('index');        
+        return redirect('/profesorguia/index');        
     }
 
     public function edit(Proyecto $proyecto)
     {
-    	$estudiantes = Estudiante::all();
+    	$estudiantes = User::where('rol_id',"=",5)->get();
         $tipos = TipoProyecto::all();
         $estados = EstadoProyecto::all();
         $areas = Area::all();
@@ -91,7 +101,7 @@ class ProyectoController extends Controller
 
     public function update(Request $request, $id)
     {
-       
+       //dd($request);
        $validator = Validator::make($request->all(), [
             'titulo' => 'required|string|min:3|max:100',
             'tipo_id' => 'required|numeric',
@@ -120,7 +130,7 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('proyecto/index');
+        return redirect('/index');
     }
 
     public function delete(Proyecto $proyecto)
@@ -132,7 +142,13 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('proyecto/index'); 
+        return redirect('/profesorguia/index'); 
+    }
+
+    public function info(Proyecto $proyecto)
+    {
+        $hitos = Hito::where('proyecto_id',"=",$proyecto->id)->get();
+        return view('proyecto.info',compact('hitos','proyecto')); 
     }
 
 
