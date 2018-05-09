@@ -5,8 +5,7 @@
 <div class="container">
 	<section class="content-header">
 		<h1>
-			Usuarios
-			<small>Todos</small>
+			Repositorio
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
@@ -24,66 +23,38 @@
 		@endif
 		<div class="box box-primary">
 			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Proyectos</h3>
+				<h3 class="box-title">Todos los Entregables</h3>
+				<a class="btn btn-success btn-sm pull-right"><i class="fa fa-plus"></i> Agregar Documento</a>
 			</div>
 			<div class="box-body">
 				<table id="table" class="table table-striped">
 					<thead>
 						<tr>
 							<th>Nombre</th>
-							<th>Email</th>
-							<th>Rol</th>
-							<th class="no-sort">Acciones</th>
+							<th>Fecha</th>
+							<th>Tarea</th>
+							<th>Estado</th>
+							<th class="no-sort"></th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($personas as $persona)
+						@foreach($entregables as $entregable)
 						<tr>
-							<td>{{ $persona->nombre() }}</td>
-							<td>{{ $persona->email }}
+							<td>{{ ucfirst($entregable->nombre) }}</td>
+							<td>{{ ucfirst($entregable->fecha)  }}</td>
+							<td>{{ $entregable->tarea->nombre}}</td>
+                      		<td>{{ $entregable->estado->nombre  }}</td>
 							<td>
-							<!-- Agregar sus roles para luego seleccionar-->
-							</td>
-							<td>
-								<a href="/persona/{{ $persona->id }}/edit" class="btn btn-warning btn-xs">Editar</a>
-								<button onclick="Eliminar('{{ $persona->id }}')" class="btn btn-danger btn-xs">Eliminar</button>
+								<a href="/entregable/{{ $entregable->id }}/Descargar" class="btn btn-info btn-sm pull-right"><i class="fa fa-cloud-download"></i> Descargar</a>
 							</td>
 						</tr>
 						@endforeach
 					</tbody>
 				</table>
 			</div>
-			<div class="box-footer">
-				<a href="/" class="btn btn-default btn-flat">Volver</a>
-			</div>
 		</div>
 	</section>
 </div>
-@section('modal')
-<!-- Modal -->
-<div class="modal fade" id="DeleteModal" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Eliminar Usuario</h4>
-			</div>
-			<form id="form-delete" method="POST" role="form">
-			{{ csrf_field() }}
-			<div class="modal-body">
-				<p> Desea eliminar el Usuario?</p>
-			</div>
-			<div class="modal-footer">
-				<button type="submit" class="btn btn-danger pull-left" >Si, eliminar</button>
-				<button type="button" class="btn btn-default pull-rigth" data-dismiss="modal">No, Cancelar</button>
-			</div>
-			</form>
-		</div>
-
-	</div>
-</div>
-@endsection
 @endsection
 
 
@@ -92,13 +63,6 @@
 @endsection('style')
 
 @section('script')
-
-<script>
-	function Eliminar(id){
-		$('#form-delete').attr('action', '/persona/delete/'+id);
-		$('#DeleteModal').modal('toggle');
-	};
-</script>
 
 <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>	
 <script>

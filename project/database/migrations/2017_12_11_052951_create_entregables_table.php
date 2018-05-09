@@ -19,6 +19,7 @@ class CreateEntregablesTable extends Migration
             $table->timestamp('fecha')->nullable()->default(null);
             $table->bigInteger('tarea_id')->index();
             $table->bigInteger('estadoEntregable_id')->index();
+            $table->string('ruta');
             $table->timestamps();
         });
     }

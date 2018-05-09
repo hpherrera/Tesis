@@ -63,6 +63,8 @@ Route::get('entregable/create2', 'EntregableController@create2');
 Route::get('entregable/{entregable}/edit', 'EntregableController@edit');
 Route::post('entregable/update/{entregable}', 'EntregableController@update');
 Route::post('entregable/delete/{entregable}','EntregableController@delete');
+Route::get('entregable/{entregable}/Descargar', 'EntregableController@descargar');
+
 
 
 //PRofesorGuia
@@ -70,3 +72,6 @@ Route::get('/indexProfesorGuia', 'ProfesorGuiaController@index');
 Route::get('profesorguia/estudiantes', 'ProfesorGuiaController@estudiantes');
 Route::get('profesorguia/proyecto/create', 'ProyectoController@create');
 Route::post('proyecto', 'ProyectoController@store'); 
+
+//Repositorio
+Route::get('indexRepositorio','RepositorioController@index');

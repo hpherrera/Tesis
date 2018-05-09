@@ -38,6 +38,7 @@
                       <td>
                       <a href="/entregable/{{ $entregable->id }}/edit" data-toggle="tooltip" title="Editar" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>
                       <a onclick="Eliminar('{{ $entregable->id }}')" data-toggle="tooltip" title="Eliminar" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></a>
+                      <a  href="/entregable/{{ $entregable->id }}/Descargar" data-toggle="tooltip" title="Descargar" class="btn btn-info btn-xs"><i class="fa fa-cloud-download"></i></a>
                       </td>
                     </tr>
                   @endforeach
@@ -118,7 +119,6 @@
 @endsection
 
 @section('script')
-
 <script>
   function Eliminar(id){
     $('#form-delete').attr('action', '/entregable/delete/'+id);

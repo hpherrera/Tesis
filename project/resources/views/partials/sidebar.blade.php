@@ -200,7 +200,7 @@
 					</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-eye"></i> Ver todos</a></li>
+					<li><a href="/indexRepositorio"><i class="fa fa-eye"></i> Ver todos</a></li>
 					<li><a href="#"><i class="fa fa-plus"></i> Agregar</a></li>
 				</ul>
 			</li>

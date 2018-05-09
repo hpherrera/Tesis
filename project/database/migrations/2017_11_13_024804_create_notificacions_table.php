@@ -14,7 +14,11 @@ class CreateNotificacionsTable extends Migration
     public function up()
     {
         Schema::create('notificacions', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id')->index();
+            $table->string('texto');
+            $table->bigInteger('tipo_notificacion_id')->index();
+            $table->Integer('leido');
+            $table->string('email')->index();
             $table->timestamps();
         });
     }

@@ -55,7 +55,7 @@
               <div class="timeline-item">
                 <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
 
-                <h3 class="timeline-header"><a href="#">Tú</a></h3>
+                <h3 class="timeline-header"><a href="#">Yo</a></h3>
 
                 <div class="timeline-body">
                   Tengo dudas si en el documento de requisitos va o no el diseño
