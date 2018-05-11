@@ -23,10 +23,9 @@ class User extends Authenticatable
      */
     protected $hidden = ['password', 'remember_token'];
 
-
-    public function rol()
+    public function roles()
     {
-        return $this->belongsTo('App\Rol');
+        return $this->belongsToMany('App\Rol', 'user_rols');
     }
 
     public function persona()
@@ -36,7 +35,7 @@ class User extends Authenticatable
 
     public function Administrador()
     {
-        if($this->rol->id == 1)
+        if($this->rol_id == 1)
         {
             return true;
         }
@@ -46,7 +45,7 @@ class User extends Authenticatable
 
     public function Funcionario()
     {
-        if($this->rol->id == 2)
+        if($this->rol_id == 2)
         {
             return true;
         }
@@ -55,7 +54,7 @@ class User extends Authenticatable
     }
     public function ProfesorGuia()
     {
-        if($this->rol->id == 3)
+        if($this->rol_id == 3)
         {
             return true;
         }
@@ -64,7 +63,7 @@ class User extends Authenticatable
     }
     public function ProfesorCurso()
     {
-        if($this->rol->id == 4)
+        if($this->rol_id == 4)
         {
             return true;
         }
@@ -75,7 +74,7 @@ class User extends Authenticatable
 
     public function Estudiante()
     {
-        if($this->rol->id == 5)
+        if($this->rol_id == 5)
         {
             return true;
         }
@@ -85,7 +84,7 @@ class User extends Authenticatable
 
     public function Invitado()
     {
-        if($this->rol->id == 6)
+        if($this->rol_id == 6)
         {
             return true;
         }

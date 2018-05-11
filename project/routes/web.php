@@ -16,6 +16,8 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/pick_role', 'HomeController@pick');
+Route::post('/login_with_role', 'HomeController@pickRole');
 
 //Proyecto
 Route::get('/indexProyecto', 'ProyectoController@index');
