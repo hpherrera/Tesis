@@ -54,7 +54,33 @@
 
 				<li class="dropdown notifications-menu">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<span class="hidden-xs">{{ Auth::user()->email }}</span>
+						
+						@if(Auth::user()->rol_id == 1)
+						<div class="avatar-circle in-purple">
+							<span class="initials">A</span>
+						</div>
+						@elseif(Auth::user()->rol_id == 2)
+						<div class="avatar-circle in-green">
+							<span class="initials">F</span>
+						</div>
+						@elseif(Auth::user()->rol_id == 3)
+						<div class="avatar-circle in-orange">
+							<span class="initials">PG</span>
+						</div>
+						@elseif(Auth::user()->rol_id == 4)
+						<div class="avatar-circle in-red">
+							<span class="initials">PC</span>
+						</div>
+						@elseif(Auth::user()->rol_id == 5)
+						<div class="avatar-circle in-yellow">
+							<span class="initials">E</span>
+						</div>
+						@elseif(Auth::user()->rol_id == 6)
+						<div class="avatar-circle in-pink">
+							<span class="initials">I</span>
+						</div>
+						@endif
+						<span class="hidden-xs"> {{ Auth::user()->email }}</span>
 					</a>
 					<ul class="dropdown-menu">
 						<li class="header text-center">
@@ -74,6 +100,11 @@
 						</li>
 						<li style="height: auto;">
 							<ul class="menu" style="height: auto;">
+								@if(Auth::user()->roles->count() > 1)
+								<li>
+									<a href="/pick_role"><i class="fa fa-vcard-o"></i> Seleccionar Rol</a>
+								</li>
+								@endif
                             	<li>
                                     <a href="#"
                                         onclick="event.preventDefault();

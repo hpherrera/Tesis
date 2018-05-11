@@ -2,63 +2,62 @@
 
 @section('content')
 
-<div class="container">
-	<section class="content-header">
-		<h1>
-			Usuarios
-			<small>Todos</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Todos</li>
-		</ol>
-	</section>
+<section class="content-header">
+	<h1>
+		Usuarios
+		<small>Todos</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+		<li class="active">Todos</li>
+	</ol>
+</section>
 
-	<section class="content">
-		@if(session('message'))
-		<div class="alert alert-{{ session('type') }} alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
-			{{ session('message') }}
+<section class="content">
+	@if(session('message'))
+	<div class="alert alert-{{ session('type') }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+		{{ session('message') }}
+	</div>
+	@endif
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title">Todos los Proyectos</h3>
 		</div>
-		@endif
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Proyectos</h3>
-			</div>
-			<div class="box-body">
-				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Email</th>
-							<th>Rol</th>
-							<th class="no-sort">Acciones</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($personas as $persona)
-						<tr>
-							<td>{{ $persona->nombre() }}</td>
-							<td>{{ $persona->email }}
-							<td>
-							<!-- Agregar sus roles para luego seleccionar-->
-							</td>
-							<td>
-								<a href="/persona/{{ $persona->id }}/edit" class="btn btn-warning btn-xs">Editar</a>
-								<button onclick="Eliminar('{{ $persona->id }}')" class="btn btn-danger btn-xs">Eliminar</button>
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-			<div class="box-footer">
-				<a href="/" class="btn btn-default btn-flat">Volver</a>
-			</div>
+		<div class="box-body">
+			<table id="table" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Email</th>
+						<th>Rol</th>
+						<th class="no-sort">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($personas as $persona)
+					<tr>
+						<td>{{ $persona->nombre() }}</td>
+						<td>{{ $persona->email }}
+						<td>
+						
+						</td>
+						<td>
+							<a href="/persona/{{ $persona->id }}/edit" class="btn btn-warning btn-xs">Editar</a>
+							<button onclick="Eliminar('{{ $persona->id }}')" class="btn btn-danger btn-xs">Eliminar</button>
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
 		</div>
-	</section>
-</div>
+		<div class="box-footer">
+			<a href="/" class="btn btn-default btn-flat">Volver</a>
+		</div>
+	</div>
+</section>
+
 @section('modal')
 <!-- Modal -->
 <div class="modal fade" id="DeleteModal" role="dialog">
@@ -84,6 +83,7 @@
 	</div>
 </div>
 @endsection
+
 @endsection
 
 
