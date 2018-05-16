@@ -12,6 +12,11 @@ class Entregable extends Model
     	return $this->belongsTo('App\Tarea', 'tarea_id', 'id');
     }
 
+    public function nombre()
+    {
+    	return ucfirst($this->nombre);
+    }
+
     public function estado()
     {
     	return $this->belongsTo('App\EstadoEntregable', 'estadoEntregable_id', 'id');

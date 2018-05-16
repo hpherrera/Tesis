@@ -2,71 +2,68 @@
 
 @section('content')
 
-<div class="container">
-	<section class="content-header">
-		<h1>
-			Entregables
-			<small>Todos</small>
-		</h1>
-		<hr>
-		<ol class="breadcrumb">
-			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Todos</li>
-		</ol>
-	</section>
+<section class="content-header">
+	<h1>
+		Entregables
+		<small>Todos</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+		<li class="active">Todos</li>
+	</ol>
+</section>
 
-	<section class="content">
-		@if(session('message'))
-		<div class="alert alert-{{ session('type') }} alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
-			{{ session('message') }}
+<section class="content">
+	@if(session('message'))
+	<div class="alert alert-{{ session('type') }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+		{{ session('message') }}
+	</div>
+	@endif
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title">Todos los Entregables</h3>
 		</div>
-		@endif
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Entregables</h3>
-			</div>
-			<div class="box-body">
-				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Fecha</th>
-							<th>Tarea</th>
-							<th>Estado</th>
-							<th class="no-sort"></th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($entregables as $entregable)
-						<tr>
-							<td>{{ ucfirst($entregable->nombre) }}</td>
-							<td>{{ ucfirst($entregable->fecha)  }}</td>
-							<td>{{ $entregable->tarea->nombre}}</td>
-                      		<td>{{ $entregable->estado->nombre  }}</td>
-							<td>
-								<div class="btn-group">
-					                <button type="button" class="btn btn-info btn-xs">Acciones</button>
-					                <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
-					                  <span class="caret"></span>
-					                  <span class="sr-only">Toggle Dropdown</span>
-					                </button>
-					                <ul class="dropdown-menu" role="menu">
-					                  <li><a href="/entregable/{{ $entregable->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
-					                  <li> <a onclick="Eliminar('{{ $entregable->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
-					                  <li><a href="/entregable/{{ $entregable->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
-					                </ul>
-					              </div> 
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
+		<div class="box-body">
+			<table id="table" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Fecha</th>
+						<th>Tarea</th>
+						<th>Estado</th>
+						<th class="no-sort"></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($entregables as $entregable)
+					<tr>
+						<td>{{ ucfirst($entregable->nombre) }}</td>
+						<td>{{ ucfirst($entregable->fecha)  }}</td>
+						<td>{{ $entregable->tarea->nombre}}</td>
+                  		<td>{{ $entregable->estado->nombre  }}</td>
+						<td>
+							<div class="btn-group">
+				                <button type="button" class="btn btn-info btn-xs">Acciones</button>
+				                <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+				                  <span class="caret"></span>
+				                  <span class="sr-only">Toggle Dropdown</span>
+				                </button>
+				                <ul class="dropdown-menu" role="menu">
+				                  <li><a href="/entregable/{{ $entregable->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
+				                  <li> <a onclick="Eliminar('{{ $entregable->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
+				                  <li><a href="/entregable/{{ $entregable->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
+				                </ul>
+				              </div> 
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
 		</div>
-	</section>
-</div>
+	</div>
+</section>
 @section('modal')
 <!-- Modal -->
 <div class="modal fade" id="DeleteModal" role="dialog">
