@@ -86,7 +86,7 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('/profesorguia/index');        
+        return redirect('/');        
     }
 
     public function edit(Proyecto $proyecto)

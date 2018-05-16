@@ -1,71 +1,69 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-	<section class="content-header">
-		<h1>
-			Hito
-			<small>Crear</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Crear</li>
-		</ol>
-	</section>
+<section class="content-header">
+	<h1>
+		Hito
+		<small>Crear</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+		<li class="active">Crear</li>
+	</ol>
+</section>
 
-	<section class="content">
-		@if(session('message'))
-		<div class="alert alert-{{ session('type') }} alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
-			{{ session('message') }}
+<section class="content">
+	@if(session('message'))
+	<div class="alert alert-{{ session('type') }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+		{{ session('message') }}
+	</div>
+	@endif
+	
+	<div class="box box-success">
+		<div class="box-header with-border">
+			<h3 class="box-title">Registrar Hito</h3>
 		</div>
-		@endif
-		
-		<div class="box box-success">
-			<div class="box-header with-border">
-				<h3 class="box-title">Registrar Hito</h3>
-			</div>
-			<form method="POST" role="form" action="/hito">
-				{{ csrf_field() }}
-				<div class="box-body">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
-								<label>Nombre</label>
-								<input type="text" class="form-control" placeholder="EJ: Documento diseño ..." name="nombre">
-								@if ($errors->has('nombre'))
-								<span class="help-block">
-									<strong>{{ $errors->first('nombre') }}</strong>
-								</span>
-								@endif
-							</div>
-							<div class="form-group has-feedback {{ $errors->has('fecha_rango') ? 'has-error': '' }}">
-								<label>Fecha de inicio y termino</label>
-								<div class="input-group date">
-								<div class="input-group-addon">
-									<i class="fa fa-calendar"></i>
-								</div>
-									<input type="text" class="form-control pull-rigth" name="fecha_rango">
-								</div>
-								@if ($errors->has('fecha_rango'))
-								<span class="help-block">
-									<strong>{{ $errors->first('fecha_rango') }}</strong>
-								</span>
-								@endif
-							</div>
-							<input type="hidden" name="fecha_inicio">
-							<input type="hidden" name="fecha_termino">
+		<form method="POST" role="form" action="/hito">
+			{{ csrf_field() }}
+			<div class="box-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
+							<label>Nombre</label>
+							<input type="text" class="form-control" placeholder="EJ: Documento diseño ..." name="nombre">
+							@if ($errors->has('nombre'))
+							<span class="help-block">
+								<strong>{{ $errors->first('nombre') }}</strong>
+							</span>
+							@endif
 						</div>
+						<div class="form-group has-feedback {{ $errors->has('fecha_rango') ? 'has-error': '' }}">
+							<label>Fecha de inicio y termino</label>
+							<div class="input-group date">
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+								<input type="text" class="form-control pull-rigth" name="fecha_rango">
+							</div>
+							@if ($errors->has('fecha_rango'))
+							<span class="help-block">
+								<strong>{{ $errors->first('fecha_rango') }}</strong>
+							</span>
+							@endif
+						</div>
+						<input type="hidden" name="fecha_inicio">
+						<input type="hidden" name="fecha_termino">
 					</div>
 				</div>
-				<div class="box-footer">
-					<button type="submit" class="btn btn-success btn-flat pull-right"><i class="fa fa-save"></i> Guardar </button>
-				</div>
-			</form>
-		</div>
-	</section>
-</div>
+			</div>
+			<div class="box-footer">
+				<button type="submit" class="btn btn-success btn-flat pull-right"><i class="fa fa-save"></i> Guardar </button>
+			</div>
+		</form>
+	</div>
+</section>
 @endsection
 
 @section('script')

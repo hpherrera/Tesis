@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Hito;
 use App\Estudiante;
@@ -16,6 +17,7 @@ use App\Notificacion;
 use App\Persona;
 use Storage;
 use File;
+use App\Mail\NotificacionTarea;
 
 class EntregableController extends Controller
 {
@@ -105,14 +107,14 @@ class EntregableController extends Controller
 
             /* Creo el entregable para enviarlo a base de datos */
             $carbon = new Carbon();
-            Entregable::create([
+            $entregable = Entregable::create([
                 'nombre' => $request['nombre'],
                 'fecha' => $carbon->now(),
                 'tarea_id' => $request['tarea_id'] ,
                 'estadoEntregable_id' => 5,
                 'ruta' => $carpeta."/".$uniqueFileName
             ]);
-            
+
             //Mensaje
             session()->flash('title', '¡Éxito!');
             session()->flash('message', 'El documento se a subido exitosamente!');
@@ -138,6 +140,7 @@ class EntregableController extends Controller
             ]);
 
             /* Crear mensaje y enviar notificacion */
+            Mail::to($emailProfesorGuia)->send(new NotificacionTarea($entregable));
 
             return redirect()->action(
                     'TareaController@info', ['tarea' => $request->tarea_id]

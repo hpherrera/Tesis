@@ -12,4 +12,9 @@ class Tarea extends Model
     {
     	return $this->belongsTo('App\Hito', 'hito_id', 'id');
     }
+
+    public function nombre()
+    {
+    	return ucfirst($this->nombre);
+    }
 }

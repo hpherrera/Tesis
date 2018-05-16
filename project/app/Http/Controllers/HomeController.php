@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Persona;
 use App\Proyecto;
+use App\Hito;
 
 class HomeController extends Controller
 {
@@ -43,7 +44,9 @@ class HomeController extends Controller
         }
         else if($user->Estudiante())
         {
-            return view('home');
+            $proyecto = Proyecto::where('estudiante_id', $user->id)->first();
+
+            return view('estudiante.index', compact('proyecto'));
         }
         else if($user->Funcionario())
         {
@@ -51,7 +54,7 @@ class HomeController extends Controller
         }
         else if($user->ProfesorGuia())
         {
-            $proyectos = Proyecto::where('profesorguia_id', $user->id);
+            $proyectos = Proyecto::where('profesorguia_id', $user->id)->get();
 
             return view('profesorguia.index', compact('proyectos'));
         }

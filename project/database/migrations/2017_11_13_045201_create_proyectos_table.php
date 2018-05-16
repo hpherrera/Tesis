@@ -16,7 +16,7 @@ class CreateProyectosTable extends Migration
         Schema::create('proyectos', function (Blueprint $table) {
             $table->bigIncrements('id')->index();
             $table->string('titulo');
-            $table->bigInteger('alumno_id')->index();
+            $table->bigInteger('estudiante_id')->index();
             $table->bigInteger('tipo_id')->index();
             $table->bigInteger('estado_id')->index();
             $table->Integer('progreso');

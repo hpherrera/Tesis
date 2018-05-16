@@ -27,4 +27,14 @@ class Proyecto extends Model
     {
     	return $this->belongsTo('App\Area', 'area_id', 'id');
     }
+
+    public function hitos()
+    {
+        return $this->hasMany('App\Hito', 'proyecto_id', 'id');
+    }
+
+    public function titulo()
+    {
+        return ucfirst($this->titulo);
+    }
 }
