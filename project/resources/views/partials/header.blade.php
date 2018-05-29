@@ -10,12 +10,13 @@
 
 		<div class="navbar-custom-menu">
 			<ul class="nav navbar-nav">
-
 				<li class="dropdown notifications-menu">
+					@if(Auth::user()->rol_id != 4)
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<i class="fa fa-bell-o"></i>
 						<span class="label label-warning">10</span>
 					</a>
+					@endif
 					<ul class="dropdown-menu">
 						<li class="header">You have 10 notifications</li>
 						<li>

@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-	<div class="container">
+
     <section class="content-header">
       <h1><b>{{$hito->nombre}}</b></h1>
-      <hr>
       <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
         <li class="active">Hito/{{$hito->id}}</li>
@@ -12,8 +11,6 @@
     </section>
 
     <section class="content">
-      <div class="row">
-        <div class="col-md-8">
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Tareas del Hito</h3>
@@ -25,52 +22,47 @@
                     <th>Nombre</th>
                     <th>Fecha Termino</th>
                     <th>Comentario</th>
+                    @if(Auth::user()->rol_id == 5)
                     <th class="no-sort"></th>
+                    @endif
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($tareas as $tarea)
                     <tr>
-                      <td><a href="/tarea/{{ $tarea->id }}/info" data-toggle="tooltip" title="ver información">{{ ucfirst($tarea->nombre) }}</a></td>
+                      <td>
+                      @if(Auth::user()->rol_id == 3)
+                        <a href="/tarea/{{ $tarea->id }}/info" data-toggle="tooltip" title="ver información">{{ ucfirst($tarea->nombre) }}</a>
+                      @elseif(Auth::user()->rol_id == 5)
+                        {{ ucfirst($tarea->nombre) }}
+                      @endif
+                      </td>
                       <td>{{ ucfirst($tarea->fecha_limite)  }}
                       <td>{{ ucfirst($tarea->comentario)  }}</td>
+                      @if(Auth::user()->rol_id == 5)
                       <td>
-                      <a href="/tarea/{{ $tarea->id }}/edit" data-toggle="tooltip" title="Editar" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>
-                      <a onclick="Eliminar('{{ $tarea->id }}')" data-toggle="tooltip" title="Eliminar" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i></a>
+                      <div class="btn-group">
+                            <button type="button" class="btn btn-info btn-xs">Acciones</button>
+                            <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+                              <span class="caret"></span>
+                              <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                              <li><a href="/tarea/{{ $tarea->id }}/edit"><i class="fa fa-pencil"></i>Editar</a></li>
+                              <li><a onclick="Eliminar('{{ $tarea->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
+                              <li><a href="/tarea/{{ $tarea->id }}/info"><i class="fa fa-eye"></i>Ver</li>
+                            </ul>
+                        </div> 
                       </td>
+                      @endif
                     </tr>
                   @endforeach
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
-
-        
-        <div class="col-md-4">
-          <div class="vl col-md-1"></div>
-          <div class="row">
-            <h4 align="CENTER">EVENTOS PROXIMOS</h4>
-            <br>
-            <div><i class="fa fa-tasks"></i><b> Tarea 2: Entrevista con el cliente para capturar requisitos</b></div>
-            <div><i class="fa fa-calendar"></i> Lunes, 11 Diciembre</div>
-            <br>
-            <a href="#"><span><b>Ir al Calendario </b></span></a>
-            <hr>
-
-            <div>
-              <h4 align="CENTER">ACTIVIDAD RECIENTE</h4>
-              <br>
-              <div><i class="fa fa-comment"></i><b> Comentario:</b> Tarea 2</div>
-              <br>
-              <div><i class="fa fa-comment"></i><b>Comentario:</b> Tarea 3</div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
     </section>
-  </div>
+
 @section('modal')
 <!-- Modal -->
 <div class="modal fade" id="DeleteModal" role="dialog">
@@ -100,20 +92,6 @@
 @endsection
 
 @section('style')
-<style type="text/css">
-  hr { 
-    border: 1px solid #BDBDBD; 
-    border-radius: 200px /8px; 
-    height: 0px; 
-    text-align: center; 
-  } 
-
-  .vl {
-    border-left: 0.1px solid #BDBDBD;
-    height: 600px;
-  }
-</style>
-
 <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}"/>
 @endsection
 

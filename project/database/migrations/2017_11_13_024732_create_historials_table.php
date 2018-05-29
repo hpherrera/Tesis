@@ -15,6 +15,8 @@ class CreateHistorialsTable extends Migration
     {
         Schema::create('historials', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('texto');
+            $table->bigInteger('estudiante_id')->index();
             $table->timestamps();
         });
     }

@@ -1,52 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
-	<section class="content-header">
-		<h1>
-			{{$proyecto->titulo}}
-			<small>información</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Todos</li>
-		</ol>
-	</section>
 
-	<section class="content">
-		@if(session('message'))
-		<div class="alert alert-{{ session('type') }} alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
-			{{ session('message') }}
-		</div>
-		@endif
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Hitos</h3>
-			</div>
-			<div class="box-body">
-				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Fecha Inicio</th>
-							<th>Fecha Termino</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($hitos as $hito)
-						<tr>
-							<td><a href="/hito/{{ $hito->id }}/info" data-toggle="tooltip" title="ver información">{{ ucfirst($hito->nombre) }}</a></td>
-							<td>{{ ucfirst($hito->fecha_inicio) }}</td>
-							<td>{{ ucfirst($hito->fecha_termino) }}</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</section>
+<section class="content-header">
+	<h1>
+		Estudiantes
+		<small>Todos</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+		<li class="active">Todos</li>
+	</ol>
+</section>
 
+<section class="content">
+	@if(session('message'))
+	<div class="alert alert-{{ session('type') }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+		{{ session('message') }}
+	</div>
+	@endif
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title">Todos los Estudiantes en proceso de Proyecto de Título</h3>
+		</div>
+		<div class="box-body">
+			<table id="table" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Email</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($personas as $estudiante)
+					<tr>
+						<td>{{ $estudiante->nombre() }}</td>
+						<td>{{ $estudiante->email }}</td>
+						<td> ver mas info y acciones a realizar </td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
+		<div class="box-footer">
+			<a href="/" class="btn btn-default btn-flat">Volver</a>
+		</div>
+	</div>
+</section>
 @endsection
 
 
@@ -55,19 +58,6 @@
 @endsection('style')
 
 @section('script')
-
-<script>
-	function Eliminar(id){
-		$('#form-delete').attr('action', '/hito/delete/'+id);
-		$('#DeleteModal').modal('toggle');
-	};
-</script>
-
-<script>
-  $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
 <script src="{{ asset('plugins/datatables/datatables.min.js') }}"></script>	
 <script>
 	var table;

@@ -9,6 +9,7 @@ use App\User;
 use App\Persona;
 use App\Proyecto;
 use App\Hito;
+use App\ProfesorCurso;
 
 class HomeController extends Controller
 {
@@ -45,22 +46,25 @@ class HomeController extends Controller
         else if($user->Estudiante())
         {
             $proyecto = Proyecto::where('estudiante_id', $user->id)->first();
-
             return view('estudiante.index', compact('proyecto'));
         }
         else if($user->Funcionario())
         {
-            //return view('');
+            $proyectos = Proyecto::All();
+            return view('funcionario.index',compact('proyectos'));
         }
         else if($user->ProfesorGuia())
         {
             $proyectos = Proyecto::where('profesorguia_id', $user->id)->get();
-
             return view('profesorguia.index', compact('proyectos'));
         }
         else if($user->profesorCurso())
         {
-            //return view('');
+            $curso = ProfesorCurso::where('profesor_id', $user->id)->get();
+            //dd($curso); supngamos que es 1
+            $proyectos = Proyecto::where('estado_id',1)->get();
+            //dd($proyectos);
+            return view('profesorcurso.index',compact('proyectos'));
         }
         else
         {

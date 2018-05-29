@@ -23,8 +23,8 @@
 		@endif
 		<div class="box box-primary">
 			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Entregables</h3>
-				<a class="btn btn-success btn-sm pull-right"><i class="fa fa-plus"></i> Agregar Documento</a>
+				<h3 class="box-title">Todos los Documentos</h3>
+				<!--<a class="btn btn-success btn-sm pull-right"><i class="fa fa-plus"></i> Agregar Documento</a>-->
 			</div>
 			<div class="box-body">
 				<table id="table" class="table table-striped">

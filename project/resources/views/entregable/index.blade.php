@@ -39,6 +39,7 @@
 				<tbody>
 					@foreach($entregables as $entregable)
 					<tr>
+					@if($entregable->id_padre == 0)
 						<td>{{ ucfirst($entregable->nombre) }}</td>
 						<td>{{ ucfirst($entregable->fecha)  }}</td>
 						<td>{{ $entregable->tarea->nombre}}</td>
@@ -57,6 +58,7 @@
 				                </ul>
 				              </div> 
 						</td>
+					@endif
 					</tr>
 					@endforeach
 				</tbody>

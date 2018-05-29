@@ -16,8 +16,8 @@
 					{{ csrf_field() }}
 					<input type="hidden" name="user" value="{{ $user->id }}">
 					<input type="hidden" name="rol" value="{{ $rol->id }}">
-					
 					<button type="submit" class="btn btn-primary btn-block"> Entrar como {{ $rol->nombre() }}</button>
+					<br>
 				</form>
 			</div>
 		@endforeach

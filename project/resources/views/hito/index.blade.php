@@ -31,7 +31,7 @@
 						<th>Nombre</th>
 						<th>Fecha Inicio</th>
 						<th>Fecha Termino</th>
-						<th>Progreso %</th>
+						<th>Cantidad de tareas</th>
 						<th class="no-sort"></th>
 					</tr>
 				</thead>
@@ -41,7 +41,7 @@
 						<td>{{ ucfirst($hito->nombre) }}</td>
 						<td>{{ ucfirst($hito->fecha_inicio) }}
 						<td>{{ ucfirst($hito->fecha_termino) }}</td>
-						<td>0 %</td>
+						<td></td>
 						<td>
 							<div class="btn-group">
 				                <button type="button" class="btn btn-info btn-xs">Acciones</button>

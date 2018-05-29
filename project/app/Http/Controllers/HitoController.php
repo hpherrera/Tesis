@@ -11,6 +11,7 @@ use App\User;
 use App\Proyecto;
 use App\Tarea;
 use App\Entregable;
+use App\Historial;
 
 class HitoController extends Controller
 {
@@ -63,6 +64,13 @@ class HitoController extends Controller
         session()->flash('message', 'El hito se ha registrado exitosamente!');
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
+
+        // creo algo en el historial
+        Historial::create([
+            'texto' => 'Creo el hito '. $request['nombre'],
+            'estudiante_id' => auth()->user()->id
+        ]);
+
 
         return redirect('/indexHito');        
     }

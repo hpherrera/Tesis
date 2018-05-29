@@ -4,7 +4,7 @@
 <section class="content-header">
 	<h1>
 		@if(count($proyecto))
-		{{ $proyecto->titulo }}
+			{{ $proyecto->titulo }}
 		@else
 		Sin proyecto
 		@endif
@@ -29,7 +29,9 @@
 						<thead>
 							<tr>
 								<th>Nombre</th>
-								<th>Progreso %</th>
+								<th>Fecha Inicio</th>
+								<th>Fecha Termino</th>
+								<th>Cantidad Tareas</th>
 								<th class="no-sort"></th>
 							</tr>
 						</thead>
@@ -38,7 +40,9 @@
 							@foreach($proyecto->hitos as $hito)
 							<tr>
 								<td>{{ ucfirst($hito->nombre) }}</td>
-								<td>0 %</td>
+								<td></td>
+								<td></td>
+								<td></td>
 								<td>
 									<div class="btn-group">
 										<button type="button" class="btn btn-info btn-xs">Acciones</button>
@@ -47,9 +51,9 @@
 											<span class="sr-only">Toggle Dropdown</span>
 										</button>
 										<ul class="dropdown-menu" role="menu">
-											<li><a href="/hito/{{ $hito->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
+											<li><a href="/hito/{{ $hito->id }}/edit"><i class="fa fa-pencil"></i>Editar </a></li>
 											<li> <a onclick="Eliminar('{{ $hito->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
-											<li><a href="/hito/{{ $hito->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
+											<li><a href="/hito/{{ $hito->id }}/info"><i class="fa fa-eye"></i>ver </a></li>
 										</ul>
 									</div> 
 								</td>
@@ -65,8 +69,9 @@
 		</div>
 	</div>
 </section>
-</div>
+
 @endsection
+
 @section('modal')
 <div class="modal fade" id="DeleteModal" role="dialog">
 	<div class="modal-dialog">
@@ -94,20 +99,6 @@
 
 @section('style')
 <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}"/>
-
-<style type="text/css">
-hr { 
-	border: 1px solid #BDBDBD; 
-	border-radius: 200px /8px; 
-	height: 0px; 
-	text-align: center; 
-} 
-
-.vl {
-	border-left: 0.1px solid #BDBDBD;
-	height: 700px;
-}
-</style>
 @endsection('style')
 
 @section('script')

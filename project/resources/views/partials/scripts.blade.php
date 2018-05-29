@@ -15,3 +15,5 @@
 <script src="{{ asset('plugins/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('plugins/fullcalendar/locale/es.js') }}"></script>
 <script src="{{ asset('plugins/fullcalendar/gcal.min.js') }}"></script>
+<script src="{{ asset('plugins/chartjs/Chart.bundle.min.js') }}"></script>
+

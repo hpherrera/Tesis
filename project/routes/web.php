@@ -35,7 +35,7 @@ Route::post('persona', 'PersonaController@store');
 Route::get('persona/persona/create', 'PersonaController@create');
 
 //Estudiante
-Route::get('estudiante/index', 'EstudianteController@index');
+Route::get('estudiante/{estudiante}', 'EstudianteController@historial');
 
 //Hito
 Route::get('/indexHito', 'HitoController@index');
@@ -60,6 +60,7 @@ Route::post('/fechas' ,'TareaController@fechas');
 Route::get('/indexEntregable', 'EntregableController@index');
 Route::get('entregable/{tarea}/create', 'EntregableController@create');
 Route::post('entregable', 'EntregableController@store');
+Route::post('entregableRevision', 'EntregableController@store2');
 Route::get('entregable/{entregable}/info', 'EntregableController@info');
 Route::get('entregable/create2', 'EntregableController@create2');
 Route::get('entregable/{entregable}/edit', 'EntregableController@edit');
@@ -67,9 +68,7 @@ Route::post('entregable/update/{entregable}', 'EntregableController@update');
 Route::post('entregable/delete/{entregable}','EntregableController@delete');
 Route::get('entregable/{entregable}/Descargar', 'EntregableController@descargar');
 
-
-
-//PRofesorGuia
+//ProfesorGuia
 Route::get('/indexProfesorGuia', 'ProfesorGuiaController@index');
 Route::get('profesorguia/estudiantes', 'ProfesorGuiaController@estudiantes');
 Route::get('profesorguia/proyecto/create', 'ProyectoController@create');
@@ -77,3 +76,8 @@ Route::post('proyecto', 'ProyectoController@store');
 
 //Repositorio
 Route::get('indexRepositorio','RepositorioController@index');
+
+//Funcionario
+Route::get('estudents','FuncionarioController@all_students');
+Route::get('createoldproyect','FuncionarioController@create');
+Route::get('stadistic','FuncionarioController@stadistic');

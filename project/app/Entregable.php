@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Entregable extends Model
 {
-    protected $fillable = ['nombre', 'fecha','tarea_id','estadoEntregable_id','ruta'];
+    protected $fillable = ['nombre', 'fecha','tarea_id','estadoEntregable_id','ruta','id_padre'];
     public function tarea()
     {
     	return $this->belongsTo('App\Tarea', 'tarea_id', 'id');

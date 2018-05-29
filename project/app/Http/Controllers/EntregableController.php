@@ -87,7 +87,7 @@ class EntregableController extends Controller
         $file = $request->file('archivo');
 
         /* Asigno un nombre unico al archivo Pdf */
-        $uniqueFileName = uniqid() . $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension();
+        $uniqueFileName =  $request['nombre'].'_'.uniqid().'.' . $file->getClientOriginalExtension() ;
 
         if($file->getClientOriginalExtension() != 'pdf')
         {
@@ -112,7 +112,8 @@ class EntregableController extends Controller
                 'fecha' => $carbon->now(),
                 'tarea_id' => $request['tarea_id'] ,
                 'estadoEntregable_id' => 5,
-                'ruta' => $carpeta."/".$uniqueFileName
+                'ruta' => $carpeta."/".$uniqueFileName,
+                'id_padre' => 0
             ]);
 
             //Mensaje
@@ -150,6 +151,60 @@ class EntregableController extends Controller
         
     }
 
+    public function store2(Request $request)
+    {
+        //dd($request);
+        /* obtengo el archivo PDF */
+        $file = $request->file('archivo');
+
+        /* Asigno un nombre unico al archivo Pdf */
+        $uniqueFileName =  $request['nombre'].'_'.uniqid().'.' . $file->getClientOriginalExtension() ;
+
+        //dd($request);
+        if($file->getClientOriginalExtension() != 'pdf')
+        {
+            //Mensaje
+            session()->flash('title', '¡Error!');
+            session()->flash('message', 'El documento no es del formato solicitado!');
+            session()->flash('icon', 'fa-remove');
+            session()->flash('type', 'danger');
+            return redirect('entregable/create2');
+        }
+        else
+        {
+            /* Creo  la Carpeta en orden de hito a tarea /ID_HITO/ID_TAREA y guardo en servidor */
+            $carpeta = $request->hito."/".$request->tarea_id;
+            $file->move(storage_path('archivos/'.$carpeta) , $uniqueFileName);
+
+
+            /* Creo el entregable para enviarlo a base de datos */
+            $carbon = new Carbon();
+            $entregable = Entregable::create([
+                'nombre' => $request['nombre'],
+                'fecha' => $carbon->now(),
+                'tarea_id' => $request['tarea'] ,
+                'estadoEntregable_id' => 5,
+                'ruta' => $carpeta."/".$uniqueFileName,
+                'id_padre' => $request['entregablePadre']
+            ]);
+
+            //Mensaje
+            session()->flash('title', '¡Éxito!');
+            session()->flash('message', 'El documento se a subido exitosamente!');
+            session()->flash('icon', 'fa-check');
+            session()->flash('type', 'success');
+
+            //Ver quien hizo el ingreso y notificar al contrario
+
+            //volver a la vista del entregable mostrando sus documentos de revision
+
+            //creo comentario
+
+            return back();
+        }
+
+    }
+
     public function edit(Entregable $entregable)
     {
         $proyecto = Proyecto::where('estudiante_id',"=",auth()->user()->id)->get();
@@ -170,7 +225,7 @@ class EntregableController extends Controller
     
     public function update(Request $request, $id)
     {
-        ///dd($request);
+        //dd($request);
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|min:3|max:100',
         ]);
@@ -204,7 +259,18 @@ class EntregableController extends Controller
 
     public function info(Entregable $entregable)
     {
-        return view('entregable.info',compact('entregable'));
+        //dd($entregable);
+        $EntregablePadre = $entregable;
+        $entregables = array();
+        array_push($entregables,$entregable);
+        $entregables_proyecto = Entregable::all();
+        foreach ($entregables_proyecto as $entre) {
+            if($entre->id_padre == $entregable->id)
+            {
+                array_push($entregables,$entre);
+            }
+        }
+        return view('entregable.info',compact('entregables','EntregablePadre'));
     }
 
     public function delete(Entregable $entregable)

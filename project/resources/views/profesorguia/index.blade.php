@@ -34,7 +34,7 @@
 								<th>Título</th>
 								<th>Alumno</th>
 								<th>Estado</th>
-								<th class="no-sort">Acciones</th>
+								<th class="no-sort"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -45,17 +45,17 @@
 								<td>{{ $proyecto->estado->nombre() }}</td>
 								<td>
 									<div class="btn-group">
-                
-                      <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" data-toggle="tooltip" title="Acciones">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <ul class="dropdown-menu" role="menu">
-                        <li><a href="/proyecto/{{ $proyecto->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
-                        <li> <a onclick="Eliminar('{{ $proyecto->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
-                        <li><a href="/proyecto/{{ $proyecto->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
-                      </ul>
-                   </div> 
+										<button type="button" class="btn btn-info btn-xs">Acciones</button>
+										<button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+											<span class="caret"></span>
+											<span class="sr-only">Toggle Dropdown</span>
+										</button>
+                      					<ul class="dropdown-menu" role="menu">
+					                        <li><a href="/proyecto/{{ $proyecto->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
+					                        <li> <a onclick="Eliminar('{{ $proyecto->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
+					                        <li><a href="/proyecto/{{ $proyecto->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
+					                     </ul>
+                   					</div> 
 								</td>
 							</tr>
 							@endforeach

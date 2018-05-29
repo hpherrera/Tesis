@@ -15,6 +15,8 @@ class CreateProfesorCursosTable extends Migration
     {
         Schema::create('profesor_cursos', function (Blueprint $table) {
             $table->increments('id');
+            $table->bigInteger('curso_id')->index();
+            $table->bigInteger('profesor_id')->index();
             $table->timestamps();
         });
     }
