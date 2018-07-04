@@ -28,9 +28,9 @@
 			<table id="table" class="table table-striped">
 				<thead>
 					<tr>
-						<th>Nombre</th>
-						<th>Email</th>
-						<th>Rol</th>
+						<th> Nombre </th>
+						<th> Email </th>
+						<th> Rol en uso</th>
 						<th class="no-sort">Acciones</th>
 					</tr>
 				</thead>
@@ -38,9 +38,21 @@
 					@foreach($personas as $persona)
 					<tr>
 						<td>{{ $persona->nombre() }}</td>
-						<td>{{ $persona->email }}
+						<td>{{ $persona->email }} </td>
 						<td>
-						
+						@if( $persona->user['rol_id'] == 1)
+							Administrados
+						@elseif($persona->user['rol_id'] == 2)
+							Funcionario
+						@elseif($persona->user['rol_id'] == 3)
+							Profesor Guía
+						@elseif($persona->user['rol_id'] == 4)
+							Profesor Curso
+						@elseif($persona->user['rol_id'] == 5)
+							Estudiante
+						@elseif($persona->user['rol_id'] == 6)
+							Invitado
+						@endif
 						</td>
 						<td>
 							<a href="/persona/{{ $persona->id }}/edit" class="btn btn-warning btn-xs">Editar</a>
@@ -50,9 +62,6 @@
 					@endforeach
 				</tbody>
 			</table>
-		</div>
-		<div class="box-footer">
-			<a href="/" class="btn btn-default btn-flat">Volver</a>
 		</div>
 	</div>
 </section>

@@ -15,17 +15,17 @@
 					</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="persona/index"><i class="fa fa-eye"></i> Ver todos</a></li>
-					<li><a href="persona/create"><i class="fa fa-plus"></i> Agregar</a></li>
+					<li><a href="/index"><i class="fa fa-eye"></i> Ver todos</a></li>
+					<li><a href="/create"><i class="fa fa-plus"></i> Agregar</a></li>
 					<!--<li><a href="#"><i class="fa fa-plus"></i> Cargar Masivamente</a></li>-->
 				</ul>
 			</li>
 
-			<li class="treeview">
+			<!--<li class="treeview">
 				<a href="#">
 					<i class="fa fa-archive"></i><span>Proyectos</span>
 				</a>
-			</li>
+			</li>-->
 
 			@elseif(\Auth::user()->Funcionario())
 			<li><a href="/"><i class="fa fa-home"></i> <span>Home</span></a></li>
@@ -66,8 +66,8 @@
 					</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="profesorguia/estudiantes"><i class="fa fa-eye"></i> Ver todos</a></li>
-					<li><a href="#"><i class="fa fa-plus"></i> Agregar</a></li>
+					<li><a href="/estudiantes"><i class="fa fa-eye"></i> Ver todos</a></li>
+					<li><a href="/estudiantecreate"><i class="fa fa-plus"></i> Agregar</a></li>
 				</ul>
 			</li>
 
@@ -80,10 +80,14 @@
 				</a>
 				<ul class="treeview-menu">
 					<li><a href="/"><i class="fa fa-eye"></i> Ver todos</a></li>
-					<li><a href="proyecto/create"><i class="fa fa-plus"></i> Agregar</a></li>
+					<li><a href="/proyectocreate"><i class="fa fa-plus"></i> Agregar</a></li>
 				</ul>
 			</li>
-			<li><a href="#"><i class="fa fa-calendar"></i><span> Calendario </span></a></li>
+			<li><a href="/reunion"><i class="fa fa-calendar"></i><span> Calendario </span>
+				<span class="pull-right-container" id="aviso2" hidden>
+		            <small class="label pull-right bg-red"> Aviso !</small>
+            	</span>
+            </a></li>
 
 			@elseif(\Auth::user()->ProfesorCurso())
 
@@ -97,7 +101,7 @@
 					</span>
 				</a>
 				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-plus"></i> Agregar</a></li>
+					<li><a href="/create/estudiante"><i class="fa fa-plus"></i> Agregar</a></li>
 				</ul>
 			</li>
 
@@ -163,8 +167,11 @@
 				</ul>
 			</li>-->
 
-			<li><a href="#"><i class="fa fa-calendar"></i><span> Calendario </span></a></li>
-			<li><a href="#"><i class="fa fa-users"></i><span> Participantes </span></a></li>
+			<li><a href="/planificacion"><i class="fa fa-calendar"></i><span> Calendario </span>
+				<span class="pull-right-container" id="aviso" hidden>
+		            <small class="label pull-right bg-red"> Aviso !</small>
+            	</span>
+			</a></li>
 
 			@elseif(\Auth::user()->Invitado())
 			<li >
@@ -190,9 +197,6 @@
 				</ul>
 			</li>
 			@endif
-
-			
-
 		</ul>
 	</section>
 </aside>

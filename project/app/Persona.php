@@ -15,11 +15,12 @@ class Persona extends Model
 
     public function user()
     {
-        return $this->hasOne('App\User', 'id', 'id');
+        return $this->hasOne('App\User', 'email', 'email');
     }
 
     public function nombre()
     {
         return ucfirst($this->nombres).' '.ucfirst($this->apellidos);
     }
+
 }

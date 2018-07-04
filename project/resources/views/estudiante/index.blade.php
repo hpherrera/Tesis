@@ -17,6 +17,13 @@
 
 
 <section class="content">
+	@if(session('message'))
+	<div class="alert alert-{{ session('type') }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+		{{ session('message') }}
+	</div>
+	@endif
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-primary">
@@ -32,6 +39,7 @@
 								<th>Fecha Inicio</th>
 								<th>Fecha Termino</th>
 								<th>Cantidad Tareas</th>
+								<th>Estado</th>
 								<th class="no-sort"></th>
 							</tr>
 						</thead>
@@ -40,9 +48,14 @@
 							@foreach($proyecto->hitos as $hito)
 							<tr>
 								<td>{{ ucfirst($hito->nombre) }}</td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>{{ ucfirst($hito->fecha_inicio) }}</td>
+								<td>{{ ucfirst($hito->fecha_termino) }}</td>
+								<td>{{ count($hito->tareas) }}</td>
+								<td>
+								<div class="progress">
+  									<div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{$hito->progreso}}%" aria-valuenow="{{$hito->progreso}}" aria-valuemin="0" aria-valuemax="100">{{$hito->progreso}}%</div>
+								</div>
+								</td>
 								<td>
 									<div class="btn-group">
 										<button type="button" class="btn btn-info btn-xs">Acciones</button>
@@ -151,13 +164,6 @@
 				}
 			},
 		});
-	});
-</script>
-
-<script>
-	$('#calendario').fullCalendar({
-		height: 300,
-		locale: 'es'
 	});
 </script>
 @endsection

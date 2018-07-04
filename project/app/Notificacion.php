@@ -17,4 +17,9 @@ class Notificacion extends Model
     {
     	return $this->belongsTo('App\User', 'email', 'email');
     }
+
+    public function tipo()
+    {
+    	return $this->belongsTo('App\TipoNotificacion','tipo_notificacion_id','id');
+    }
 }

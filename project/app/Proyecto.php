@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proyecto extends Model
 {
-    protected $fillable = ['titulo', 'estudiante_id','tipo_id', 'estado_id','progreso','area_id','profesorGuia_id'];
+    protected $fillable = ['titulo', 'estudiante_id','tipo_id', 'estado_id','progreso','area_id','profesorGuia_id','year','semestre','nombre_estudiante'];
 
     public function estado()
     {

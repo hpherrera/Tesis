@@ -18,6 +18,8 @@ use App\Persona;
 use Storage;
 use File;
 use App\Mail\NotificacionTarea;
+use App\Mail\NotificacionRevisionEntregable;
+use App\Comentario;
 
 class EntregableController extends Controller
 {
@@ -64,25 +66,55 @@ class EntregableController extends Controller
 
     public function create2()
     {
+        $today = Carbon::now();
+        $today_user_day = $today->format('d');
+        $today_user_month = $today->format('m');
+        $today_user_y = $today->format('Y');
         $proyecto = Proyecto::where('estudiante_id',"=",auth()->user()->id)->get();
         $hitos = Hito::where('proyecto_id',"=",$proyecto[0]['id'])->get();
         $tareas = array();
         $tareas_todas = Tarea::all();
         foreach ($tareas_todas as $tarea) {
-            foreach ($hitos as $hito) {
-                if($tarea->hito_id == $hito->id)
-                {
-                    array_push($tareas,$tarea); 
+
+            $lastDateTarea = Carbon::parse($tarea->fecha_limite);
+            $lastDate_tarea = $lastDateTarea->format('d');
+            $last_tarea_month = $lastDateTarea->format('m');
+            $last_tarea_y = $lastDateTarea->format('Y');
+
+            if($last_tarea_month >= $today_user_month &&
+                $last_tarea_y >= $today_user_y &&
+                $lastDate_tarea >= $today_user_day)
+            {
+                foreach ($hitos as $hito) {
+                    if($hito->id == $tarea->hito_id)
+                    {
+                        array_push($tareas,$tarea); 
+                    }
+                    
                 }
             }
-           
         }
-        return view('entregable.create2',compact('tareas'));
+        if(sizeof($tareas) > 0)
+        {
+            return view('entregable.create2',compact('tareas'));
+        }
+        else
+        {
+            session()->flash('title', '¡Error!');
+            session()->flash('message', 'No se pueden crear entregable ya que no hay tareas con fecha disponible para adjuntar un entregable.');
+            session()->flash('icon', 'fa-remove');
+            session()->flash('type', 'danger');
+
+            $proyecto = Proyecto::where('estudiante_id', auth()->user()->id)->first();
+            return view('estudiante.index',compact('proyecto'));
+        }
+        
     }
 
     public function store(Request $request)
     {
 
+        //dd($request);
         /* obtengo el archivo PDF */
         $file = $request->file('archivo');
 
@@ -111,9 +143,10 @@ class EntregableController extends Controller
                 'nombre' => $request['nombre'],
                 'fecha' => $carbon->now(),
                 'tarea_id' => $request['tarea_id'] ,
-                'estadoEntregable_id' => 5,
+                'estadoEntregable_id' => 4,
                 'ruta' => $carpeta."/".$uniqueFileName,
-                'id_padre' => 0
+                'id_padre' => 0,
+                'subidoPor' => 5
             ]);
 
             //Mensaje
@@ -147,8 +180,6 @@ class EntregableController extends Controller
                     'TareaController@info', ['tarea' => $request->tarea_id]
             );
         }
-
-        
     }
 
     public function store2(Request $request)
@@ -173,9 +204,23 @@ class EntregableController extends Controller
         else
         {
             /* Creo  la Carpeta en orden de hito a tarea /ID_HITO/ID_TAREA y guardo en servidor */
-            $carpeta = $request->hito."/".$request->tarea_id;
+            $carpeta = $request['hito']."/".$request['tarea'];
             $file->move(storage_path('archivos/'.$carpeta) , $uniqueFileName);
-
+            $rol_persona = auth()->user()->rol_id;
+            if($rol_persona == 3)//Profesor Guia
+            {
+                $subidoPor = 3;
+                /*Cambio estado de el primer entregable a revisado*/
+                $entregablePadre = Entregable::find($request['entregablePadre']);
+                $entregablePadre->estadoEntregable_id = 3;
+                $entregablePadre->save();
+                $estado = 5;
+            }
+            else
+            {
+                $subidoPor = 5;
+                $estado = 3;
+            }
 
             /* Creo el entregable para enviarlo a base de datos */
             $carbon = new Carbon();
@@ -183,26 +228,79 @@ class EntregableController extends Controller
                 'nombre' => $request['nombre'],
                 'fecha' => $carbon->now(),
                 'tarea_id' => $request['tarea'] ,
-                'estadoEntregable_id' => 5,
+                'estadoEntregable_id' => $estado,
                 'ruta' => $carpeta."/".$uniqueFileName,
-                'id_padre' => $request['entregablePadre']
+                'id_padre' => $request['entregablePadre'],
+                'subidoPor' =>$subidoPor
             ]);
 
-            //Mensaje
-            session()->flash('title', '¡Éxito!');
-            session()->flash('message', 'El documento se a subido exitosamente!');
-            session()->flash('icon', 'fa-check');
-            session()->flash('type', 'success');
-
             //Ver quien hizo el ingreso y notificar al contrario
+            $persona = Persona::where('email',"=",auth()->user()->email)->get();
+            $nombre_persona = $persona[0]['nombres']." ".$persona[0]['apellidos'];
+            
 
-            //volver a la vista del entregable mostrando sus documentos de revision
+            //dd($rol_persona);
+            if($rol_persona == 3)//Profesor Guia
+            {
+                //Crear Notificacion 
+                $tarea = Tarea::find($request['tarea']);
+                $new_entregable = Entregable::find($entregable->id);
+                Notificacion::create([
+                    'texto' => 'El profesor guía '.$nombre_persona.' subio una revisión del entregable '. $entregable->nombre().'  en la tarea '.$tarea->nombre,
+                    'tipo_notificacion_id' => 0,
+                    'leido' => 0,
+                    'email' => auth()->user()->email
+                ]); 
+
+                /* Crear mensaje y enviar notificacion */
+                //Buscar Email alumno del proyecto
+                $proyecto = Hito::where('id',"=",$request['hito'])->get();
+                $estudiante_id = Proyecto::where('id',"=",$proyecto[0]['proyecto_id'])->get();
+                $eamilEstudiante = User::where('id',"=",$estudiante_id[0]['estudiante_id'])->get();
+
+                Mail::to($eamilEstudiante[0]['email'])->send(new NotificacionRevisionEntregable($new_entregable));
+
+                session()->flash('title', '¡Éxito!');
+                session()->flash('message', 'El documento se a subido exitosamente y se ha notificado al estudiante');
+                session()->flash('icon', 'fa-check');
+                session()->flash('type', 'success');
+            }
+            else // Estudiante
+            {
+                //Crear Notificacion 
+                $tarea = Tarea::find($request['tarea']);
+                $new_entregable = Entregable::find($entregable->id);
+                Notificacion::create([
+                    'texto' => 'El estudiante '.$nombre_persona.' subio una revisión del entregable '. $entregable->nombre().'  en la tarea '.$tarea->nombre,
+                    'tipo_notificacion_id' => 0,
+                    'leido' => 0,
+                    'email' => auth()->user()->email
+                ]);
+
+                /* Crear mensaje y enviar notificacion */
+                //Buscar email del Profesor
+                $proyecto = Hito::where('id',"=",$request['hito'])->get();
+                $profesor_id = Proyecto::where('id',"=",$proyecto[0]['proyecto_id'])->get();
+                $emailProfesor = User::where('id',"=",$profesor_id[0]['profesorGuia_id'])->get();
+
+                Mail::to($emailProfesor)->send(new NotificacionRevisionEntregable($new_entregable));
+
+                session()->flash('title', '¡Éxito!');
+                session()->flash('message', 'El documento se a subido exitosamente y se ha notificado al profesor guía');
+                session()->flash('icon', 'fa-check');
+                session()->flash('type', 'success');
+            }
 
             //creo comentario
+            $comentario = Comentario::create([
+                'texto' => $request['comentario'],
+                'entregable_id' => $request['entregablePadre'],
+                'user_id' => auth()->user()->id,
+                'user_name' => $nombre_persona
+            ]);
 
             return back();
         }
-
     }
 
     public function edit(Entregable $entregable)
@@ -225,36 +323,58 @@ class EntregableController extends Controller
     
     public function update(Request $request, $id)
     {
+        $file = $request->file('archivo');
+
+        /* Asigno un nombre unico al archivo Pdf */
+        $uniqueFileName =  $request['nombre'].'_'.uniqid().'.' . $file->getClientOriginalExtension() ;
+
         //dd($request);
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string|min:3|max:100',
-        ]);
-
-        if ($validator->fails()) 
+        if($file->getClientOriginalExtension() != 'pdf')
         {
+            //Mensaje
             session()->flash('title', '¡Error!');
-            session()->flash('message', 'Existieron errores!');
-            session()->flash('icon', 'fa-check');
+            session()->flash('message', 'El documento no es del formato solicitado!');
+            session()->flash('icon', 'fa-remove');
             session()->flash('type', 'danger');
-            return redirect('entregable/create')->withErrors($validator)->withInput();
+            return redirect('entregable/create2');
         }
+        else
+        {
+            $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|min:3|max:100',
+            ]);
 
-        $carbon = new Carbon();
-       
-        $entregable = Entregable::find($id);
-        $entregable->nombre = $request['nombre'] ;
-        $entregable->fecha = $carbon->now();
-        $entregable->tarea_id = $request['tarea_id'] ;
-        $entregable->save();
+            if ($validator->fails()) 
+            {
+                session()->flash('title', '¡Error!');
+                session()->flash('message', 'Existieron errores!');
+                session()->flash('icon', 'fa-check');
+                session()->flash('type', 'danger');
+                return redirect('entregable/create')->withErrors($validator)->withInput();
+            }
 
-        session()->flash('title', '¡Éxito!');
-        session()->flash('message', 'El entregable se ha editado exitosamente!');
-        session()->flash('icon', 'fa-check');
-        session()->flash('type', 'success');
-        
-        return redirect()->action(
-                'TareaController@info', ['tarea' => $request->tarea_id]
-        );     
+            $carpeta = $request['hito']."/".$request['tarea'];
+            $file->move(storage_path('archivos/'.$carpeta) , $uniqueFileName);
+
+            $carbon = new Carbon();
+           
+            $entregable = Entregable::find($id);
+            $entregable->nombre = $request['nombre'] ;
+            $entregable->fecha = $carbon->now();
+            $entregable->tarea_id = $request['tarea_id'] ;
+            $entregable->ruta = $carpeta."/".$uniqueFileName;
+            $entregable->save();
+
+            session()->flash('title', '¡Éxito!');
+            session()->flash('message', 'El entregable se ha editado exitosamente!');
+            session()->flash('icon', 'fa-check');
+            session()->flash('type', 'success');
+            
+            return redirect()->action(
+                    'TareaController@info', ['tarea' => $request->tarea_id]
+            );
+        }
+            
     } 
 
     public function info(Entregable $entregable)
@@ -270,7 +390,9 @@ class EntregableController extends Controller
                 array_push($entregables,$entre);
             }
         }
-        return view('entregable.info',compact('entregables','EntregablePadre'));
+        $comentarios = Comentario::where('entregable_id',"=",$entregable->id)->get();
+        //dd($comentarios);
+        return view('entregable.info',compact('entregables','EntregablePadre','comentarios'));
     }
 
     public function delete(Entregable $entregable)
@@ -287,7 +409,8 @@ class EntregableController extends Controller
         return redirect('/indexEntregable'); 
     }
 
-    public function descargar($id){
+    public function descargar($id)
+    {
 
          $entregable = Entregable::find($id);
          $rutaarchivo= "../storage/archivos/".$entregable->ruta;

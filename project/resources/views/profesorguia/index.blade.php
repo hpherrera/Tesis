@@ -40,8 +40,14 @@
 						<tbody>
 							@foreach($proyectos as $proyecto)
 							<tr>
-								<td>{{ ucfirst($proyecto->titulo) }}</td>
-								<td>{{ $proyecto->persona->nombre() }}
+								<td><a href="/proyecto/{{ $proyecto->id }}/info" data-toggle="tooltip" title="ver información">{{ ucfirst($proyecto->titulo) }}</a></td>
+								<td>
+								@if($proyecto->estudiante_id == 0)
+									Sin Estudiante
+								@else
+									{{$proyecto->persona->nombre()}}
+								@endif
+
 								<td>{{ $proyecto->estado->nombre() }}</td>
 								<td>
 									<div class="btn-group">

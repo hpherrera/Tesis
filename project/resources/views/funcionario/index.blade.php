@@ -40,7 +40,7 @@
 						@foreach($proyectos as $proyecto)
 						<tr>
 							<td>{{ ucfirst($proyecto->titulo) }}</td>
-							<td>{{ $proyecto->persona->nombre() }}
+							<td>{{ $proyecto->nombre_estudiante }}
 							<td>{{ $proyecto->tipo->nombre() }}</td>
 							<td>{{ $proyecto->estado->nombre() }}</td>
 							<td>{{ $proyecto->area->nombre()}}</td>
@@ -48,9 +48,6 @@
 						@endforeach
 					</tbody>
 				</table>
-			</div>
-			<div class="box-footer">
-				<a href="/" class="btn btn-default btn-flat">Volver</a>
 			</div>
 		</div>
 	</section>

@@ -24,7 +24,7 @@
 		
 		<div class="box box-warning">
 			<div class="box-header with-border">
-				<h3 class="box-title">Crear Tarea </h3>
+				<h3 class="box-title">Editar Tarea </h3>
 			</div>
 			<form method="POST" role="form" action="/tarea/update/{{ $tarea->id }}">
 				{{ csrf_field() }}
@@ -33,7 +33,7 @@
 						<div class="col-md-12">
 							<div class="form-group has-feedback {{ $errors->has('hito_id') ? 'has-error': '' }}">
 								<label>Hito</label>
-								<select class="form-control" name="hito_id">
+								<select class="form-control" name="hito_id" id="hitos">
 									@foreach($hitos as $hito)
 										@if($hito->id == $tarea->hito_id)
 											<option value="{{ $hito->id }}" selected="">{{ $hito->nombre }}</option>
@@ -58,12 +58,12 @@
 								@endif
 							</div>
 							<div class="form-group has-feedback {{ $errors->has('fecha_limite') ? 'has-error': '' }}">
-								<label>Fecha Termino</label>
+								<label id="label-fecha">Fecha Termino : debe estar entre {{$fecha_inicio}} y {{$fecha_termino}}</label>
 								<div class="input-group date">
 								  <div class="input-group-addon">
 								    <i class="fa fa-calendar"></i>
 								  </div>
-								  <input type="text" class="form-control pull-right" name="fecha_limite">
+								  <input type="text" class="form-control pull-right" name="fecha_limite" value="{{$tarea->fecha_limite}}">
 								</div>
 								@if ($errors->has('fecha_limite'))
 								<span class="help-block">
@@ -85,6 +85,8 @@
 						</div>
 					</div>
 				</div>
+				<input type="hidden" name="fecha2" value="{{$fecha2}}" id="fecha2">
+				<input type="hidden" name="fechaT2" value="{{$fechaT2}}" id="fechaT2">
 				<div class="box-footer">
 					<button type="submit" class="btn btn-warning btn-flat pull-right"><i class="fa fa-pencil"></i> Editar </button>
 				</div>
@@ -96,7 +98,38 @@
 @section('script')
 <script>
 	$('input[name=fecha_limite]').datepicker({
-		format: 'yyyy-mm-dd'
+		format: 'yyyy-mm-dd',
+		language: 'es',
+		orientation: 'bottom',
+		startDate: $('#fecha2').val(),
+		endDate: $('#fechaT2').val()
+	});
+
+	$("select[id^='hito']").change(function () {
+		var id = $(this).val();
+		//funciona ajax que setee los valor del datapicker para el rango de las tareas...
+		console.log(id);
+		$.ajax({
+            type: 'POST',
+            url: "/fechas",
+            data: {
+                '_token':"{{ csrf_token() }}",
+                'hito_id':id 
+            },
+            success: function(data) {
+            	console.log(data);
+            	$('#label-fecha').text("Fecha Termino : debe estar entre el "+data.fechaI+" y "+data.fechaT);
+            	//cambiar las fechas
+            	$('input[name=fecha_limite]').datepicker('setStartDate', data.fecha_inicio);
+				$('input[name=fecha_limite]').datepicker('setEndDate', data.fecha_termino);
+
+            	if(data.fechaT < $('#fechaT2').val())
+            		console.log("sii");
+            		$('input[name=fecha_limite]').val('').datepicker('update');
+            },
+		    error: function (result) {
+		    }
+        });
 	});
 </script>
 @endsection

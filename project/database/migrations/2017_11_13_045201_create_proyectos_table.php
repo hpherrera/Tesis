@@ -22,6 +22,9 @@ class CreateProyectosTable extends Migration
             $table->Integer('progreso');
             $table->bigInteger('area_id')->index();
             $table->bigInteger('profesorGuia_id')->index();
+            $table->bigInteger('year')->index();
+            $table->bigInteger('semestre')->index();
+            $table->string('nombre_estudiante');
             $table->timestamps();
         });
     }

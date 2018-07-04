@@ -18,6 +18,7 @@ Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/pick_role', 'HomeController@pick');
 Route::post('/login_with_role', 'HomeController@pickRole');
+Route::post('/change','HomeController@changepass');
 
 //Proyecto
 Route::get('/indexProyecto', 'ProyectoController@index');
@@ -29,13 +30,12 @@ Route::post('proyecto/delete/{proyecto}','ProyectoController@delete');
 Route::get('proyecto/{proyecto}/info' ,'ProyectoController@info');
 
 //Persona
-Route::get('persona/index', 'PersonaController@index');
-Route::get('persona/create', 'PersonaController@create');
+Route::get('/index', 'PersonaController@index');
+Route::get('/create', 'PersonaController@create');
 Route::post('persona', 'PersonaController@store'); 
-Route::get('persona/persona/create', 'PersonaController@create');
-
-//Estudiante
-Route::get('estudiante/{estudiante}', 'EstudianteController@historial');
+Route::get('persona/{persona}/edit', 'PersonaController@edit');
+Route::post('persona/update/{persona}', 'PersonaController@update');
+Route::post('persona/delete/{persona}','PersonaController@delete');
 
 //Hito
 Route::get('/indexHito', 'HitoController@index');
@@ -68,11 +68,18 @@ Route::post('entregable/update/{entregable}', 'EntregableController@update');
 Route::post('entregable/delete/{entregable}','EntregableController@delete');
 Route::get('entregable/{entregable}/Descargar', 'EntregableController@descargar');
 
-//ProfesorGuia
+//Profesor Guia
 Route::get('/indexProfesorGuia', 'ProfesorGuiaController@index');
-Route::get('profesorguia/estudiantes', 'ProfesorGuiaController@estudiantes');
-Route::get('profesorguia/proyecto/create', 'ProyectoController@create');
+Route::get('estudiantes', 'ProfesorGuiaController@estudiantes');
+Route::get('proyectocreate', 'ProyectoController@create');
+Route::get('estudiantecreate', 'EstudianteController@create');
 Route::post('proyecto', 'ProyectoController@store'); 
+Route::get('reunion','ProfesorGuiaController@planificacion');
+Route::post('createreunion','ProfesorGuiaController@createreunion');
+Route::post('/tarea/reuniones','ProfesorGuiaController@show_reunion');
+
+//Profesor curso
+Route::get('/estudiante/{proyecto}/info', 'EstudianteController@historial');
 
 //Repositorio
 Route::get('indexRepositorio','RepositorioController@index');
@@ -81,3 +88,26 @@ Route::get('indexRepositorio','RepositorioController@index');
 Route::get('estudents','FuncionarioController@all_students');
 Route::get('createoldproyect','FuncionarioController@create');
 Route::get('stadistic','FuncionarioController@stadistic');
+
+//Comentario
+Route::get('comentario','ComentarioController@store');
+Route::post('/comentario/eliminar/{comentario}','ComentarioController@delete');
+Route::post('/comentario/crear','ComentarioController@create');
+Route::post('/comentario/editar/{comentario}','ComentarioController@edit');
+
+//Notificaciones
+Route::post('/isacepted','NotificacionController@isAcepted');
+Route::get('notification/index', 'NotificacionController@index');
+Route::post('/updateNotificaction' ,'NotificacionController@update');
+Route::post('/viewNotificaction' ,'NotificacionController@view');
+
+//Planificacion
+Route::get('planificacion','EstudianteController@planificacion');
+Route::post('/proyecto/hitos','EstudianteController@show_hitos');
+Route::post('/hitos_month','EstudianteController@hitos_month');
+
+//Reunión
+Route::post('/reunion/edit','ProfesorGuiaController@editreunion');
+Route::post('/reunion/editar','ProfesorGuiaController@updatereunion');
+Route::post('/reuniones_month','ProfesorGuiaController@reuniones_month');
+Route::post('reunion/delete/{reunion}','ProfesorGuiaController@delete');

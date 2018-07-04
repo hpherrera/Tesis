@@ -74,7 +74,7 @@
                 <div class="form-group{{ $errors->has('rol_id') ? 'has-error': '' }}">
 					<label for="rol" class="col-md-4 control-label">Rol</label>
 					<div class="col-md-6">
-						<select class="form-control" name="rol_id" id="select-rol" ">
+						<select class="form-control" name="rol_id[]" id="select-rol" multiple required>
 							@foreach($roles as $rol)
 								<option value="{{ $rol->id }}">{{ $rol->nombre() }}</option>
 							@endforeach
@@ -100,6 +100,22 @@
                         @endif
                     </div>
                 </div>	
+
+                <div id="curso" class="form-group{{ $errors->has('curso_id') ? 'has-error': '' }}" hidden>
+                    <label for="curso" class="col-md-4 control-label">Curso</label>
+                    <div class="col-md-6">
+                        <select class="form-control" name="curso_id" id="select-curso" ">
+                            @foreach($cursos as $curso)
+                                <option value="{{ $curso->id }}">{{ $curso->nombre }}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->has('curso_id'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('curso_id') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
 
                 <div id="invitado" class="form-group{{ $errors->has('tipo_id') ? 'has-error': '' }}" hidden>
 					<label for="tipo" class="col-md-4 control-label">Tipo</label>
@@ -163,23 +179,43 @@
 <script>
 	$('#select-rol').on('change', function() {
     	var id = $(this).val();
-    	if(id == 5)
-    	{
-    		$('#matricula').show();
-    		$('#invitado').hide();
-    		$('#carrera').hide();
-    	}
-    	else if(id == 6)
-    	{
-    		$('#invitado').show();
-    		$('#carrera').show();
-    		$('#matricula').hide();
-    	}
-    	else{
-
-    		$('#matricula').hide();
-    		$('#invitado').hide();
-    	}
+        if(id == 4)
+        {
+            $('#curso').show();
+            $('#invitado').hide();
+            $('#carrera').hide();
+            $('#matricula').hide();
+        }
+    	else if(id == 5)
+        {
+            $("#invitado .form-control").removeAttr('required');
+            $("#carrera .form-control").removeAttr('required');
+            $("#matricula .form-control").attr('required','required');
+            $('#matricula').show();
+            $('#invitado').hide();
+            $('#carrera').hide();
+            $('#curso').hide();
+        }
+        else if(id == 6)
+        {
+            $("#invitado .form-control").attr('required','required');
+            $("#carrera .form-control").attr('required','required');
+            $('#invitado').show();
+            $('#carrera').show();
+            $("#matricula .form-control").removeAttr('required');
+            $('#matricula').hide();
+            $('#curso').hide();
+        }
+        else{
+            
+            $("#matricula .form-control").removeAttr('required');
+            $("#invitado .form-control").removeAttr('required');
+            $("#carrera .form-control").removeAttr('required');
+            $('#matricula').hide();
+            $('#invitado').hide();
+            $('#carrera').hide();
+            $('#curso').hide();
+        }
 	});
 
 	$('#select-tipo-invitado').on('change',function(){
@@ -197,9 +233,21 @@
 		else
 		{
 			$('#nombre_Empresa').hide();
-			$('#nombre_Empresa').hide();
+			$('#carrera').hide();
 		}
 	});
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('#select-rol').select2();
+    });
+</script>
 @endsection
+
+
+@section('style')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+@endsection('style')

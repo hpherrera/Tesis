@@ -21,45 +21,42 @@
 			{{ csrf_field() }}
 			<div class="box-body">
 				<div class="col-md-3">
-					<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
-						<label> Módulo </label>
-						<select class="form-control" name="modulo">
-							<option value="1">Formulación</option>
-							<option value="2">Proyecto</option>
-							<option value="3">Ambas</option>
-						</select>
-					</div>
+					<label> Módulo </label>
+					<select class="form-control" name="modulo">
+						<option value="" disabled selected hidden style="color: gray">Seleccione Módulo...
+						<option value="1">Formulación</option>
+						<option value="2">Proyecto</option>
+						<option value="3">Ambas</option>
+					</select>
 				</div>
 				<div class="col-md-3">
-					<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
-						<label> Tipo </label>
-						<select class="form-control" name="modulo">
-							<option value="1">Vigente</option>
-							<option value="2">Postergado</option>
-							<option value="3">Eliminado</option>
-							<option value="3">Todos</option>
-						</select>
-					</div>
+					<label> Tipo </label>
+					<select class="form-control" name="estado">
+						<option value="" disabled selected hidden style="color: gray">Seleccione Estado...
+						<option value="1">Vigente</option>
+						<option value="2">Postergado</option>
+						<option value="3">Eliminado</option>
+						<option value="3">Todos</option>
+					</select>
+				</div>
+				<!-- Cargar las fechas de base de datos -->
+				<div class="col-md-3">
+					<label> Año </label>
+					<select class="form-control" name="anio">
+						<option value="" disabled selected hidden style="color: gray">Seleccione Año...
+						<option value="1">2018</option>
+						<option value="2">2017</option>
+						<option value="3">Todos</option>
+					</select>
 				</div>
 				<div class="col-md-3">
-					<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
-						<label> Año </label>
-						<select class="form-control" name="modulo">
-							<option value="1">2018</option>
-							<option value="2">2017</option>
-							<option value="3">Todos</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
-						<label> Semestre </label>
-						<select class="form-control" name="modulo">
-							<option value="1">Primero</option>
-							<option value="2">Segundo</option>
-							<option value="3">Ambos</option>
-						</select>
-					</div>
+					<label> Semestre </label>
+					<select class="form-control" name="semestre">
+						<option value="" disabled selected hidden style="color: gray">Seleccione Semestre...
+						<option value="1">Primero</option>
+						<option value="2">Segundo</option>
+						<option value="3">Ambos</option>
+					</select>
 				</div>
 			</div>
 		</form>

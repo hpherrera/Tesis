@@ -44,7 +44,14 @@
 						<tr>
 							<td>{{ ucfirst($proyecto->titulo) }}</td>
 							<td>{{ $proyecto->persona->nombre() }}
-							<td>{{ $proyecto->tipo->nombre() }}</td>
+							</td>
+							<td>
+								@if($proyecto->estudiante_id == 0)
+									Sin Estudiante
+								@else
+									{{$proyecto->persona->nombre()}}
+								@endif
+							</td>
 							<td>{{ $proyecto->estado->nombre() }}</td>
 							<td>{{ ucfirst($proyecto->progreso) }}</td>
 							<td>{{ $proyecto->area->nombre()}}</td>

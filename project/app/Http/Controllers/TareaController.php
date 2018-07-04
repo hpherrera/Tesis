@@ -11,6 +11,8 @@ use App\User;
 use App\Proyecto;
 use App\Tarea;
 use App\Entregable;
+use App\Historial;
+
 class TareaController extends Controller
 {
     public function __construct()
@@ -68,6 +70,13 @@ class TareaController extends Controller
             'hito_id' => $request['hito_id']
         ]);
 
+        // creo algo en el historial
+        $hito = Hito::find($request['hito_id']);
+        Historial::create([
+            'texto' => 'Creo la tarea '. $request['nombre'] .' en el hito '. $hito->nombre,
+            'estudiante_id' => auth()->user()->id
+        ]);
+
 
         session()->flash('title', '¡Éxito!');
         session()->flash('message', 'La tarea se ha registrado exitosamente!');
@@ -96,6 +105,12 @@ class TareaController extends Controller
                 $entregable->delete();
             }
         } 
+
+        $hito = Hito::find($tarea->hito_id);
+        Historial::create([
+            'texto' => 'Elimino la tarea '. $tarea->nombre .' del hito '. $hito->nombre,
+            'estudiante_id' => auth()->user()->id
+        ]);
        
         $tarea->delete();
 
@@ -111,7 +126,20 @@ class TareaController extends Controller
     {
         $proyecto = Proyecto::where('estudiante_id',"=",auth()->user()->id)->get();
         $hitos = Hito::where('proyecto_id',"=",$proyecto[0]['id'])->get();
-        return view('tarea.edit', compact('hitos','tarea'));
+        $fecha = Carbon::parse($tarea->fecha_limite);
+        $tarea->fecha_limite = $fecha->format('Y-m-d');
+
+        foreach ($hitos as $hito) {
+            if($hito->id == $tarea->hito_id)
+                $fecha = Carbon::parse($hito->fecha_inicio);
+                $fechaT = Carbon::parse($hito->fecha_termino);
+                $fecha_inicio = $fecha->format('d-m-Y');
+                $fecha_termino = $fechaT->format('d-m-Y');
+                $fecha2 = $fecha->format('Y-m-d');
+                $fechaT2 = $fechaT->format('Y-m-d');
+        }
+        //dd($fechaT2);
+        return view('tarea.edit', compact('hitos','tarea','fecha_inicio','fecha_termino','fecha2','fechaT2'));
     }
     
     public function update(Request $request, $id)
@@ -134,6 +162,12 @@ class TareaController extends Controller
         $tarea = Tarea::find($id);
         $tarea->update($request->except ('_token'));
 
+        $hito = Hito::find($request['hito_id']);
+        Historial::create([
+            'texto' => 'Modifico la tarea '. $tarea->nombre .' en el hito '. $hito->nombre,
+            'estudiante_id' => auth()->user()->id
+        ]);
+
         session()->flash('title', '¡Éxito!');
         session()->flash('message', 'La tarea se ha editado exitosamente!');
         session()->flash('icon', 'fa-check');
@@ -146,8 +180,14 @@ class TareaController extends Controller
     {
         $hito_id = $request['hito_id'];
         $hito = Hito::find($hito_id);
+        $fecha_inicio = Carbon::parse($hito->fecha_inicio);
+        $fecha_termino = Carbon::parse($hito->fecha_termino);
+        $hito->fecha_inicio = $fecha_inicio->format('Y-m-d');
+        $hito->fecha_termino = $fecha_termino->format('Y-m-d');
 
-        return response()->json(array('fecha_inicio' => $hito->fecha_inicio,'fecha_termino' => $hito->fecha_termino));
+        $fechaI = $fecha_inicio->format('d-m-Y');
+        $fechaT = $fecha_termino->format('d-m-Y');
+        return response()->json(array('fecha_inicio' => $hito->fecha_inicio,'fecha_termino' => $hito->fecha_termino,'fechaI' => $fechaI ,'fechaT' => $fechaT));
     }
 
 }

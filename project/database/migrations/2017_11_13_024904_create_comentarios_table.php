@@ -18,6 +18,7 @@ class CreateComentariosTable extends Migration
             $table->string('texto');
             $table->bigInteger('entregable_id')->index();
             $table->bigInteger('user_id')->index();
+            $table->string('user_name');
             $table->timestamps();
         });
     }

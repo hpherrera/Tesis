@@ -26,7 +26,7 @@
 			<div class="box-header with-border">
 				<h3 class="box-title">Crear Entregable </h3>
 			</div>
-			<form form method="POST" role="form" action="/entregable/update/{{ $entregable->id }}">
+			<form form method="POST" role="form" action="/entregable/update/{{ $entregable->id }}" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<div class="box-body">
 					<div class="row">
@@ -54,13 +54,14 @@
 								@endif
 							</div>
 							<div class="form-group">
-			                  	<label for="exampleInputFile">Archivo</label>
-			                  	<input type="file" id="exampleInputFile">
-
-			                  	<p class="help-block">Seleccionar archivo</p>
+					          	<label for="exampleInputFile">Archivo a subir (Formato PDF)</label>
+					          	<input type="file" id="archivo" name="archivo" required>
+					          	<p class="help-block">Archivo subido : {{$entregable->nombre}}</p>
 							</div>
 						</div>
 					</div>
+					<input type="hidden" name="tarea" value="{{$entregable->tarea_id}}">
+        			<input type="hidden" name="hito" value="{{$entregable->tarea->hito->id}}">
 				<div class="box-footer">
 					<button type="submit" class="btn btn-warning btn-flat pull-right"><i class="fa fa-pencil"></i> Editar </button>
 				</div>

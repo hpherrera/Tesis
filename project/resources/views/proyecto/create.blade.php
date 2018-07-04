@@ -41,11 +41,13 @@
 						</div>
 						<div class="form-group has-feedback {{ $errors->has('estudiante_id') ? 'has-error': '' }}">
 							<label>Estudiante</label>
-							<select class="form-control" name="estudiante_id">
+							<select class="form-control" name="estudiante_id" id="estudiante_id">
+								<option value="" disabled selected hidden style="color: gray">Seleccione Estudiante...
 								@foreach($personas as $persona)
-								<option value="{{ $persona->persona->id }}">{{ $persona->persona->nombres}} {{$persona->persona->apellidos }}</option>
+								<option value="{{ $persona['id'] }}"> {{ $persona['nombres'] }} {{ $persona['apellidos'] }}</option>
 								@endforeach
 							</select>
+							<input type="hidden" name="nombre_estudiante" id="nombre_estudiante">
 							@if ($errors->has('estudiante_id'))
 							<span class="help-block">
 								<strong>{{ $errors->first('estudiante_id') }}</strong>
@@ -78,6 +80,28 @@
 							</span>
 							@endif
 						</div>
+						<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
+						<label> Semestre </label>
+							<select class="form-control" name="semestre">
+								<option value="1">Primero</option>
+								<option value="2">Segundo</option>
+							</select>
+						</div>
+
+						<div class="form-group has-feedback {{ $errors->has('estado_id') ? 'has-error': '' }}">
+							<label>Año</label>
+							<select class="form-control" name="year">
+								@foreach($years as $year)
+								<option value="{{ $year->id }}">{{ $year->anio }}</option>
+								@endforeach
+							</select>
+							@if ($errors->has('year'))
+							<span class="help-block">
+								<strong>{{ $errors->first('year') }}</strong>
+							</span>
+							@endif
+						</div>
+
 						<div class="form-group has-feedback {{ $errors->has('area_id') ? 'has-error': '' }}">
 							<label>Area</label>
 							<select class="form-control" name="area_id">
@@ -100,4 +124,14 @@
 		</form>
 	</div>
 </section>
+@endsection
+
+@section('script')
+<script>
+	$('#estudiante_id').on('change', function() {
+  		var thisvalue = $(this).find("option:selected").text();
+  		console.log(thisvalue);
+  		$('#nombre_estudiante').val(thisvalue);
+	})
+</script>
 @endsection

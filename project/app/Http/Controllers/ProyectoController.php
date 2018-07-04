@@ -13,6 +13,7 @@ use App\Area;
 use App\Persona;
 use App\User;
 use App\Hito;
+use App\Year;
 
 class ProyectoController extends Controller
 {
@@ -31,21 +32,24 @@ class ProyectoController extends Controller
     public function create()
     {
     	$personas = array();
+        $years = Year::all();
         $estudiantes = Estudiante::all();
+        //dd($estudiantes);
         foreach ($estudiantes as $estudiante) {
             if($estudiante->ocupado == 0)
             {
-                $persona = User::find($estudiante->persona_id);
+                //dd($estudiante);
+                $persona = Persona::find($estudiante->persona_id);
                 array_push($personas, $persona);
             }
         }
- 
+        //dd($personas);
         $tipos = TipoProyecto::all();
         $estados = EstadoProyecto::all();
         $areas = Area::all();
 
         //dd($personas);
-        return view('proyecto.create', compact('personas','tipos','estados','areas'));
+        return view('proyecto.create', compact('personas','tipos','estados','areas','years'));
     }
 
     public function store(Request $request)
@@ -77,10 +81,19 @@ class ProyectoController extends Controller
             'estado_id' => $request['estado_id'],
             'progreso' => 0,
             'area_id' => $request['area_id'],
-            'profesorGuia_id' => auth()->user()->id
+            'profesorGuia_id' => auth()->user()->id,
+            'year' => $request['year'],
+            'semestre' => $request['semestre'],
+            'nombre_estudiante' => $request['nombre_estudiante']
         ]);
 
-
+        if($request['estudiante_id'] != 0)
+        {
+            $estudiante = Estudiante::where('persona_id',"=",$request['estudiante_id'])->get();
+            $estudiante[0]['ocupado'] = 1;
+            $estudiante[0]->save();
+        }
+        
         session()->flash('title', '¡Éxito!');
         session()->flash('message', 'El proyecto se ha registrado exitosamente!');
         session()->flash('icon', 'fa-check');
@@ -121,7 +134,8 @@ class ProyectoController extends Controller
         }
 
 
-  
+        // si cambia de curso notificar al estudiante
+
         $proyecto = Proyecto::find($id);
         $proyecto->update($request->except ('_token'));
 
@@ -130,7 +144,7 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('/index');
+        return redirect('/profesorguia/index');
     }
 
     public function delete(Proyecto $proyecto)

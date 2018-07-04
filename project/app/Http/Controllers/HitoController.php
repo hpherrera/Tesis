@@ -56,7 +56,8 @@ class HitoController extends Controller
             'nombre' => $request['nombre'],
             'fecha_inicio' => $request['fecha_inicio'],
             'fecha_termino' => $request['fecha_termino'],
-            'proyecto_id' => $proyecto[0]['id']
+            'proyecto_id' => $proyecto[0]['id'],
+            'progreso' => 0
         ]);
 
 
@@ -72,11 +73,17 @@ class HitoController extends Controller
         ]);
 
 
-        return redirect('/indexHito');        
+        return redirect('/');        
     }
 
     public function edit(Hito $hito)
     {
+        //dd($hito);
+        $fecha_inicio = Carbon::parse($hito->fecha_inicio);
+        $fecha_termino = Carbon::parse($hito->fecha_termino);
+        $hito->fecha_inicio = $fecha_inicio->format('m/d/Y');
+        $hito->fecha_termino = $fecha_termino->format('m/d/Y');        
+        //dd($hito);
         return view('hito.edit', compact('hito'));
     }
     
@@ -100,6 +107,11 @@ class HitoController extends Controller
         $hito = hito::find($id);
         $hito->update($request->except ('_token'));
 
+        // creo algo en el historial
+        Historial::create([
+            'texto' => 'Modifico el hito '. $hito->nombre,
+            'estudiante_id' => auth()->user()->id
+        ]);
 
         session()->flash('title', '¡Éxito!');
         session()->flash('message', 'El hito se ha editado exitosamente!');
@@ -135,8 +147,14 @@ class HitoController extends Controller
                 $tarea->delete();
             }
         }
-        $hito->delete();
 
+        // creo algo en el historial
+        Historial::create([
+            'texto' => 'Elimino el hito '. $hito->nombre,
+            'estudiante_id' => auth()->user()->id
+        ]);
+
+        $hito->delete();
         session()->flash('title', '¡Éxito!');
         session()->flash('message', 'El Hito'. $hito->nombre.' se ha eliminado exitosamente!');
         session()->flash('icon', 'fa-check');

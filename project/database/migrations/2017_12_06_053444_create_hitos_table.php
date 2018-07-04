@@ -19,6 +19,7 @@ class CreateHitosTable extends Migration
             $table->timestamp('fecha_inicio')->nullable()->default(null);
             $table->timestamp('fecha_termino')->nullable()->default(null);
             $table->bigInteger('proyecto_id')->index();
+            $table->bigInteger('progreso');
             $table->timestamps();
         });
     }

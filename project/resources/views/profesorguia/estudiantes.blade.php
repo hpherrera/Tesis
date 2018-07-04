@@ -40,6 +40,7 @@
 					</thead>
 					<tbody>
 						@foreach($proyectos as $proyecto)
+						@if($proyecto->estudiante_id != 0)
 						<tr>
 							<td>{{ $proyecto->persona->nombre()}}</td>
 							<td>{{ $proyecto->persona->email}}</td>
@@ -50,6 +51,7 @@
 								<button onclick="Eliminar('#')" class="btn btn-danger btn-xs">Eliminar</button>
 							</td>
 						</tr>
+						@endif
 						@endforeach
 					</tbody>
 				</table>
@@ -70,7 +72,7 @@
 			<form id="form-delete" method="POST" role="form">
 			{{ csrf_field() }}
 			<div class="modal-body">
-				<p> Desea eliminar el Usuario?</p>
+				<p> Desea eliminar el Usuario y Proyecto?</p>
 			</div>
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-danger pull-left" >Si, eliminar</button>

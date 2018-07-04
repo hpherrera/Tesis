@@ -2,7 +2,7 @@
 
 # Notificación de entrega
 
-Se ha subido un nuevo entregable al sistema a las {{ $entregable->fecha }}.
+Se ha subido un nuevo entregable al sistema el {{ $entregable->fecha }}.
 
 @component('mail::panel')
 ### Datos del entregable:
@@ -13,7 +13,7 @@ Se ha subido un nuevo entregable al sistema a las {{ $entregable->fecha }}.
 @endcomponent
 
 Gracias,<br>
-Sistema de gestión y control documental de proyectos de título.<br><br>
+Sistema de seguimiento, gestión y control documental de proyectos de título.<br><br>
 
 @endcomponent
 

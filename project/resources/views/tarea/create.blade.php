@@ -32,8 +32,8 @@
 					<div class="col-md-12">
 						<div class="form-group has-feedback {{ $errors->has('hito_id') ? 'has-error': '' }}">
 							<label>Hito</label>
-							<select class="form-control" name="hito_id" id="hito">
-								<option>Seleccione Hito</option>
+							<select class="form-control" name="hito_id" id="hitos">
+								<option value="" disabled selected hidden style="color: gray">Seleccione hito...</option>
 								@foreach($hitos as $hito)
 								<option value="{{ $hito->id }}">{{ $hito->nombre}}</option>
 								@endforeach
@@ -54,12 +54,12 @@
 							@endif
 						</div>
 						<div class="form-group has-feedback {{ $errors->has('fecha_limite') ? 'has-error': '' }}">
-							<label>Fecha Termino</label>
+							<label id="label-fecha">Fecha Termino (debe seleccionar un hito)</label>
 							<div class="input-group date">
 							  <div class="input-group-addon">
 							    <i class="fa fa-calendar"></i>
 							  </div>
-							  <input type="text" class="form-control pull-right" name="fecha_limite">
+							  <input type="text" class="form-control pull-right" name="fecha_limite" id="fecha_limite" disabled>
 							</div>
 							@if ($errors->has('fecha_limite'))
 							<span class="help-block">
@@ -91,11 +91,6 @@
 @endsection
 @section('script')
 <script>
-	$('input[name=fecha_limite]').datepicker({
-		format: 'yyyy-mm-dd',
-		language: 'es',
-		orientation: 'bottom'
-	});
 </script>
 
 <script>
@@ -110,13 +105,19 @@
                 'hito_id':id 
             },
             success: function(data) {
-            	console.log(data);
+            	$('#fecha_limite').attr("disabled",false);
+            	$('#label-fecha').text("Fecha Termino : debe estar entre el "+data.fechaI+" y "+data.fechaT);
+            	$('input[name=fecha_limite]').datepicker({
+            		format: 'yyyy-mm-dd',
+					language: 'es',
+					orientation: 'bottom',
+					startDate: data.fecha_inicio,
+			    	endDate: data.fecha_termino
+				});
             },
 		    error: function (result) {
 		    }
         });
 	});
-
-	
 </script>
 @endsection

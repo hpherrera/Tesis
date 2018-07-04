@@ -41,16 +41,13 @@
 						</div>
 						<div class="form-group has-feedback {{ $errors->has('estudiante_id') ? 'has-error': '' }}">
 							<label>Estudiante</label>
-							<select class="form-control" name="estudiante_id">
-								@foreach($personas as $persona)
-								<option value="{{ $persona->persona->id }}">{{ $persona->persona->nombres}} {{$persona->persona->apellidos }}</option>
-								@endforeach
-							</select>
+							<input type="text" class="form-control" placeholder="Nombre" name="nombre_estudiante">
 							@if ($errors->has('estudiante_id'))
 							<span class="help-block">
 								<strong>{{ $errors->first('estudiante_id') }}</strong>
 							</span>
 							@endif
+							<input type="hidden" name="estudiante_id" value="0">
 						</div>
 						<div class="form-group has-feedback {{ $errors->has('tipo_id') ? 'has-error': '' }}">
 							<label>Tipo</label>
@@ -75,6 +72,27 @@
 							@if ($errors->has('estado_id'))
 							<span class="help-block">
 								<strong>{{ $errors->first('estado_id') }}</strong>
+							</span>
+							@endif
+						</div>
+						<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
+						<label> Semestre </label>
+							<select class="form-control" name="semestre">
+								<option value="1">Primero</option>
+								<option value="2">Segundo</option>
+							</select>
+						</div>
+
+						<div class="form-group has-feedback {{ $errors->has('estado_id') ? 'has-error': '' }}">
+							<label>Año</label>
+							<select class="form-control" name="year">
+								@foreach($years as $year)
+								<option value="{{ $year->id }}">{{ $year->anio }}</option>
+								@endforeach
+							</select>
+							@if ($errors->has('year'))
+							<span class="help-block">
+								<strong>{{ $errors->first('year') }}</strong>
 							</span>
 							@endif
 						</div>

@@ -16,6 +16,7 @@ class CreateInvitadosTable extends Migration
         Schema::create('invitados', function (Blueprint $table) {
             $table->bigIncrements('id')->index();
             $table->string('nombre');
+            $table->bigInteger('tipo');
             $table->bigInteger('persona_id')->index();
             $table->timestamps();
         });

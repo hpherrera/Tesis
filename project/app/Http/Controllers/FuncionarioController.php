@@ -11,6 +11,8 @@ use App\Area;
 use App\Persona;
 use App\User;
 use App\Hito;
+use App\Year;
+
 class FuncionarioController extends Controller
 {
     public function create()
@@ -24,13 +26,13 @@ class FuncionarioController extends Controller
                 array_push($personas, $persona);
             }
         }
- 
+        $years = Year::all();
         $tipos = TipoProyecto::all();
         $estados = EstadoProyecto::all();
         $areas = Area::all();
 
         //dd($personas);
-        return view('Funcionario.createoldproyect', compact('personas','tipos','estados','areas'));
+        return view('Funcionario.createoldproyect', compact('personas','tipos','estados','areas','years'));
     }
 
     public function all_students()

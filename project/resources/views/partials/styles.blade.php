@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css')}}">
 <link rel="stylesheet" href="{{ asset('plugins/fontawesome/font-awesome.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/fullcalendar.min.css') }}">
-<link rel="stylesheet" href="{{ asset('plugins/fullcalendar/fullcalendar.print.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/timepicker/bootstrap-timepicker.css') }}">
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">

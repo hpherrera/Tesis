@@ -51,7 +51,7 @@
 				                  <span class="sr-only">Toggle Dropdown</span>
 				                </button>
 				                <ul class="dropdown-menu" role="menu">
-				                  <li><a href="/tarea/{{ $tarea->id }}/edit""><i class="fa fa-pencil"></i> Editar </a></li>
+				                  <li><a href="/tarea/{{ $tarea->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
 				                  <li> <a onclick="Eliminar('{{ $tarea->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
 				                  <li><a href="/tarea/{{ $tarea->id }}/info"><i class="fa fa-eye"></i> ver </a></li>
 				                </ul>

@@ -34,7 +34,7 @@
 							<th>Alumno</th>
 							<th>Tipo</th>
 							<th>Area</th>
-							<th>Acciones</th>	
+							<th class="no-sort">Historial de acciones</th>	
 						</tr>
 					</thead>
 					<tbody>
@@ -44,14 +44,12 @@
 							<td>{{ $proyecto->persona->nombre() }}
 							<td>{{ $proyecto->tipo->nombre() }}</td>
 							<td>{{ $proyecto->area->nombre()}}</td>
-							<td><a href="/estudiante/{{ $proyecto->estudiante_id }}" data-toggle="tooltip" title="ver historial" class="btn btn-info btn-xs"><i class="fa fa-eye"></i></a></td>
+							<!-- ME falta darle accion a ver lo que ha hacho el estudiante durante el curso con su proyecto -->
+							<td><a href="/estudiante/{{ $proyecto->id }}/info" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> ver información</a></td>
 						</tr>
 						@endforeach
 					</tbody>
 				</table>
-			</div>
-			<div class="box-footer">
-				<a href="/" class="btn btn-default btn-flat">Volver</a>
 			</div>
 		</div>
 	</section>

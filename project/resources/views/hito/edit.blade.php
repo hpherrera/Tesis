@@ -54,8 +54,8 @@
 								</span>
 								@endif
 							</div>
-							<input type="hidden" name="fecha_inicio">
-							<input type="hidden" name="fecha_termino">
+							<input type="hidden" name="fecha_inicio" value="{{$hito->fecha_inicio}}">
+							<input type="hidden" name="fecha_termino" value="{{$hito->fecha_termino}}">
 						</div>
 					</div>
 				</div>
@@ -72,10 +72,47 @@
 <script>
 $('input[name="fecha_rango"]').daterangepicker(
 {
+	"locale": {
+        "format": "MM/DD/YYYY",
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "From",
+        "toLabel": "To",
+        "customRangeLabel": "Custom",
+        "daysOfWeek": [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        "monthNames": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        "firstDay": 1
+    }
 }, 
 function(start, end, label) {
 	$('input[name="fecha_inicio"]').val(start.format('YYYY-MM-DD'));
 	$('input[name="fecha_termino"]').val(end.format('YYYY-MM-DD'));
 });
+
+$('input[name="fecha_rango"]').data('daterangepicker').setStartDate("{{$hito->fecha_inicio}}");
+$('input[name="fecha_rango"]').data('daterangepicker').setEndDate("{{$hito->fecha_termino}}");
+
 </script>
 @endsection
