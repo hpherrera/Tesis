@@ -12,12 +12,13 @@
 </section>
 <section class="content">
 @if(session('message'))
-    <div class="alert alert-{{ session('type') }} alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
-        {{ session('message') }}
-    </div>
-    @endif
+<div class="alert alert-{{ session('type') }} alert-dismissible">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+    {{ session('message') }}
+</div>
+@endif
+
     <div class="row">
         <div class="col-md-12">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ReunionModal" class="btn btn-info btn-xs">Agregar Reunión</button>
@@ -29,6 +30,7 @@
         </div>
     </div>
 </section>
+@endsection
 
 @section('modal')
 <!-- Modal -->
@@ -184,7 +186,7 @@
     </div>
 </div>
 @endsection
-@endsection
+
 
 @section('script')
 <script>

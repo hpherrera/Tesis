@@ -177,20 +177,19 @@ class PersonaController extends Controller
     public function edit(Persona $persona)
     {
         $roles = Rol::all();
-        $user = User::where('email',"=",$persona->email)->get();
+        $user = User::where('email',"=",$persona->email)->first();
         $tipos = TipoInvitado::all();
         $cursos = Curso::All();
 
-        //dd($user);
         $tipoInvitado = -1;
-        if($user[0]['rol_id'] == 4)
+        if($user->roles->contains('id', 4)) // profesor curso
         {
-            $curso = ProfesorCurso::where('profesor_id',"=",$persona->id)->get();
-            $curso_id = Curso::find($curso[0]['curso_id']);
+            $curso = ProfesorCurso::where('profesor_id', "=", $persona->id)->first();
+            $curso_id = Curso::find($curso->id);
             //dd($curso_id);
             return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','curso_id','cursos'));
         }
-
+       /* 
         if($user[0]['rol_id'] == 5)
         {
             //dd($persona->id);
@@ -212,7 +211,7 @@ class PersonaController extends Controller
             return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','nombreInvitado','cursos'));
     
         }
-        
+        */
         return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','cursos'));
     }
 

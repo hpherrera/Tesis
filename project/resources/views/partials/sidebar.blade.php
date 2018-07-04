@@ -42,16 +42,9 @@
 			</li>
 
 			<li class="treeview">
-				<a href="#">
+				<a href="/stadistic">
 					<i class="fa fa-bar-chart"></i> <span>Estadisticas</span>
-					<span class="pull-right-container">
-						<i class="fa fa-angle-left pull-right"></i>
-					</span>
 				</a>
-				<ul class="treeview-menu">
-					<li><a href="/stadistic"><i class="fa fa-eye"></i> Estudiantes Activos </a></li>
-					<li><a href="#"><i class="fa fa-eye"></i> Estudiantes Inactivos </a></li>
-				</ul>
 			</li>
 
 

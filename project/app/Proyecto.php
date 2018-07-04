@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proyecto extends Model
 {
-    protected $fillable = ['titulo', 'estudiante_id','tipo_id', 'estado_id','progreso','area_id','profesorGuia_id','year','semestre','nombre_estudiante'];
+    protected $fillable = ['titulo', 'estudiante_id','tipo_id', 'estado_id','progreso','area_id','profesorGuia_id','year','semestre','nombre_estudiante', 'curso_id'];
 
     public function estado()
     {
@@ -26,6 +26,11 @@ class Proyecto extends Model
     public function area()
     {
     	return $this->belongsTo('App\Area', 'area_id', 'id');
+    }
+
+    public function curso()
+    {
+        return $this->belongsTo('App\Curso', 'curso_id', 'id');
     }
 
     public function hitos()

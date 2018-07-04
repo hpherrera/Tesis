@@ -75,7 +75,7 @@
 					<div class="col-md-6">
 						<select class="form-control" name="rol_id[]" id="select-rol" multiple required>
 							@foreach($roles as $rol)
-                                @if($persona->user['rol_id'] == $rol->id)
+                                @if($persona->user->roles->contains('id', $rol->id))
 								<option value="{{ $rol->id }}" selected >{{ $rol->nombre() }}</option>
                                 @else
                                 <option value="{{ $rol->id }}">{{ $rol->nombre() }}</option>
@@ -309,7 +309,6 @@
 	});
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
         $('#select-rol').select2();
@@ -317,11 +316,3 @@
 </script>
 @endsection
 
-
-@section('style')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-
-<style>
-
-</style>
-@endsection('style')

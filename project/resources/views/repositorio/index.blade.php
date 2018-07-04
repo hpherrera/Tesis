@@ -2,59 +2,57 @@
 
 @section('content')
 
-<div class="container">
-	<section class="content-header">
-		<h1>
-			Repositorio
-		</h1>
-		<ol class="breadcrumb">
-			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Todos</li>
-		</ol>
-	</section>
+<section class="content-header">
+	<h1>
+		Repositorio
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+		<li class="active">Todos</li>
+	</ol>
+</section>
 
-	<section class="content">
-		@if(session('message'))
-		<div class="alert alert-{{ session('type') }} alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
-			{{ session('message') }}
+<section class="content">
+	@if(session('message'))
+	<div class="alert alert-{{ session('type') }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+		{{ session('message') }}
+	</div>
+	@endif
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title">Todos los Documentos</h3>
+			<!--<a class="btn btn-success btn-sm pull-right"><i class="fa fa-plus"></i> Agregar Documento</a>-->
 		</div>
-		@endif
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Documentos</h3>
-				<!--<a class="btn btn-success btn-sm pull-right"><i class="fa fa-plus"></i> Agregar Documento</a>-->
-			</div>
-			<div class="box-body">
-				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Fecha</th>
-							<th>Tarea</th>
-							<th>Estado</th>
-							<th class="no-sort"></th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($entregables as $entregable)
-						<tr>
-							<td>{{ ucfirst($entregable->nombre) }}</td>
-							<td>{{ ucfirst($entregable->fecha)  }}</td>
-							<td>{{ $entregable->tarea->nombre}}</td>
-                      		<td>{{ $entregable->estado->nombre  }}</td>
-							<td>
-								<a href="/entregable/{{ $entregable->id }}/Descargar" class="btn btn-info btn-sm pull-right"><i class="fa fa-cloud-download"></i> Descargar</a>
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
+		<div class="box-body">
+			<table id="table" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Fecha</th>
+						<th>Tarea</th>
+						<th>Estado</th>
+						<th class="no-sort"></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($entregables as $entregable)
+					<tr>
+						<td>{{ ucfirst($entregable->nombre) }}</td>
+						<td>{{ ucfirst($entregable->fecha)  }}</td>
+						<td>{{ $entregable->tarea->nombre}}</td>
+                  		<td>{{ $entregable->estado->nombre  }}</td>
+						<td>
+							<a href="/entregable/{{ $entregable->id }}/Descargar" class="btn btn-info btn-sm pull-right"><i class="fa fa-cloud-download"></i> Descargar</a>
+						</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
 		</div>
-	</section>
-</div>
+	</div>
+</section>
 @endsection
 
 
