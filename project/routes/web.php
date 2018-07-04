@@ -111,3 +111,11 @@ Route::post('/reunion/edit','ProfesorGuiaController@editreunion');
 Route::post('/reunion/editar','ProfesorGuiaController@updatereunion');
 Route::post('/reuniones_month','ProfesorGuiaController@reuniones_month');
 Route::post('reunion/delete/{reunion}','ProfesorGuiaController@delete');
+
+//Grafico
+
+Route::get('chart/searchType', 'ChartController@searchType');
+Route::get('chart/searchModule', 'ChartController@searchModule');
+Route::get('chart/searchState', 'ChartController@searchState');
+Route::get('chart/searchProfessor', 'ChartController@searchProfessor');
+Route::post('chart', 'ChartController@plot');

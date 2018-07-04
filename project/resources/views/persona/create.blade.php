@@ -238,7 +238,6 @@
 	});
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -248,6 +247,3 @@
 @endsection
 
 
-@section('style')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-@endsection('style')

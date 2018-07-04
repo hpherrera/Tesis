@@ -10,27 +10,38 @@
         <li class="active">Home</li>
     </ol>
 </section>
+
 <section class="content">
-<div class="row">
-        <div class="col-md-12">
-            Fecha Limite Hito: <span><small class="label" style="background: #FFFF00; color: black">amarillo</small></span>
-            
-        </div>
-        <div class="col-md-12">
-            Fecha Limite Tarea: <span><small class="label" style="background: #04B404">verde</small></span>
-            
-        </div>
-        <div class="col-md-12">
-            Reunión Profesor : <span><small class="label" style="background: #FF3346">Rojo</small></span>
-            
-        </div>
-</div>
     <div class="row">
-        <div class="col-md-12">
-            <div id='calendar'></div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Identificadores</h3>
+                </div>
+                <div class="box-body">
+                    <div class="callout callout-warning">
+                        <p>Fecha límite hito</p>
+                    </div>
+                    <div class="callout callout-success">
+                        <p>Fecha límite tarea</p>
+                    </div>
+                    <div class="callout callout-danger">
+                        <p>Reunión profesor</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="box box-primary">
+                <div class="box-body no-padding">
+                    <div id='calendar'></div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+
+
 
 @endsection
 @section('script')
