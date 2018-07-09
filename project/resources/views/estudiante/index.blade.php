@@ -52,9 +52,13 @@
 								<td>{{ ucfirst($hito->fecha_termino) }}</td>
 								<td>{{ count($hito->tareas) }}</td>
 								<td>
-								<div class="progress">
-  									<div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{$hito->progreso}}%" aria-valuenow="{{$hito->progreso}}" aria-valuemin="0" aria-valuemax="100">{{$hito->progreso}}%</div>
-								</div>
+								@if($hito->progreso == 0)
+									{{$hito->progreso}}%
+								@else
+									<div class="progress">
+	  									<div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{$hito->progreso}}%" aria-valuenow="{{$hito->progreso}}" aria-valuemin="0" aria-valuemax="100">{{$hito->progreso}}%</div>
+									</div>
+								@endif
 								</td>
 								<td>
 									<div class="btn-group">

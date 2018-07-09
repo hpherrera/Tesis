@@ -22,6 +22,7 @@ class CreateEntregablesTable extends Migration
             $table->string('ruta');
             $table->bigInteger('id_padre')->index();
             $table->bigInteger('subidoPor')->index();
+            $table->bigInteger('tipo')->index();
             $table->timestamps();
         });
     }

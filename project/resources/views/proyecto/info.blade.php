@@ -26,23 +26,36 @@
 			</div>
 			<div class="box-body">
 				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Fecha Inicio</th>
-							<th>Fecha Termino</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($hitos as $hito)
-						<tr>
-							<td><a href="/hito/{{ $hito->id }}/info" data-toggle="tooltip" title="ver información">{{ ucfirst($hito->nombre) }}</a></td>
-							<td>{{ ucfirst($hito->fecha_inicio) }}</td>
-							<td>{{ ucfirst($hito->fecha_termino) }}</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Fecha Inicio</th>
+								<th>Fecha Termino</th>
+								<th>Cantidad Tareas</th>
+								<th>Estado</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							@foreach($proyecto->hitos as $hito)
+							<tr>
+								<td><a href="/hito/{{ $hito->id }}/info" data-toggle="tooltip" title="ver información">{{ucfirst($hito->nombre) }} </a></td>
+								<td>{{ ucfirst($hito->fecha_inicio) }}</td>
+								<td>{{ ucfirst($hito->fecha_termino) }}</td>
+								<td>{{ count($hito->tareas) }}</td>
+								<td>
+								@if($hito->progreso == 0)
+									{{$hito->progreso}}%
+								@else
+									<div class="progress">
+	  									<div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{$hito->progreso}}%" aria-valuenow="{{$hito->progreso}}" aria-valuemin="0" aria-valuemax="100">{{$hito->progreso}}%</div>
+									</div>
+								@endif
+								</td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
 			</div>
 		</div>
 	</section>

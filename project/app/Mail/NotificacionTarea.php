@@ -19,10 +19,12 @@ class NotificacionTarea extends Mailable
      * @return void
      */
     public $entregable;
+    public $link;
 
-    public function __construct(Entregable $entregable)
+    public function __construct(Entregable $entregable,$link)
     {
         $this->entregable = $entregable;
+        $this->link = $link;
     }
 
     /**

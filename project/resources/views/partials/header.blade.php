@@ -18,7 +18,7 @@
 					</a>
 					@endif
 					<ul class="dropdown-menu">
-						<li class="header">Notificaciones</li>
+						<li class="header"><b>Notificaciones</b></li>
 						<li>
 							<ul class="menu" id="Menu_Noti">	
 							</ul>

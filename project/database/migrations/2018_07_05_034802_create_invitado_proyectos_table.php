@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTipoDocumentosTable extends Migration
+class CreateInvitadoProyectosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTipoDocumentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_documentos', function (Blueprint $table) {
-            $table->bigIncrements('id')->index();
-            $table->string('nombre');
+        Schema::create('invitado_proyectos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->bigInteger('persona_id')->index();
+            $table->bigInteger('proyecto_id')->index();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateTipoDocumentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_documentos');
+        Schema::dropIfExists('invitado_proyectos');
     }
 }

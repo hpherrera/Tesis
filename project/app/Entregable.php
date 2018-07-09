@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Entregable extends Model
 {
-    protected $fillable = ['nombre', 'fecha','tarea_id','estadoEntregable_id','ruta','id_padre','subidoPor'];
+    protected $fillable = ['nombre', 'fecha','tarea_id','estadoEntregable_id','ruta','id_padre','subidoPor','tipo'];
     
     public function tarea()
     {

@@ -23,6 +23,11 @@ class Proyecto extends Model
     	return $this->belongsTo('App\Persona', 'estudiante_id', 'id');
     }
 
+    public function profesor()
+    {
+        return $this->belongsTo('App\Persona', 'profesorGuia_id', 'id');
+    }
+
     public function area()
     {
     	return $this->belongsTo('App\Area', 'area_id', 'id');

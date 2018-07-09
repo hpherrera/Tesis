@@ -13,6 +13,7 @@ use App\ProfesorCurso;
 use App\Notificacion;
 use App\Tarea;
 use App\Entregable;
+use App\InvitadoProyecto;
 
 class HomeController extends Controller
 {
@@ -40,7 +41,7 @@ class HomeController extends Controller
             return view('changepass',compact('user'));
         }
 
-        if($user->roles->count() > 1 && $user->rol_id == 0 && $user->login == 1)
+        elseif($user->roles->count() > 1 && $user->rol_id == 0 && $user->login == 1)
         {
             return view('pickrole', compact('user'));
         }
@@ -54,38 +55,43 @@ class HomeController extends Controller
         else if($user->Estudiante())
         {
             $proyecto = Proyecto::where('estudiante_id', $user->id)->first();
-            //ver cantidad de tareas con entregable
-            $estados = array();
-            $count = 0;
-            $hitos = Hito::where('proyecto_id',"=",$proyecto->id)->get();
-            //dd($hitos);
-            foreach ($hitos as $hito) {
-
-                $tareas = Tarea::where('hito_id',"=",$hito->id)->get();
-                foreach ($tareas as $tarea) {
-                    $entregables = Entregable::where('tarea_id',"".$tarea->id)->get();
-                    if(sizeof($entregables) > 0)
-                    {
-                        $count++;
-                    }
-                }
-
-                //calculo
-                $total = 0;
-                $count_Tareas = sizeof($tareas);
-                if($count_Tareas){
-                    $total = ($count*100)/$count_Tareas;
-                }
-
-                $hito_modificado = Hito::find($hito->id);
-                $hito->progreso = $total;
-                $hito->save();
-
-
+            //dd($proyecto);
+            //ver cantidad de tareas con entregable si tiene proyecto
+            if($proyecto!=null)
+            {
+                $estados = array();
                 $count = 0;
+                $hitos = Hito::where('proyecto_id',"=",$proyecto->id)->get();
+                //dd($hitos);
+                foreach ($hitos as $hito) {
+
+                    $tareas = Tarea::where('hito_id',"=",$hito->id)->get();
+                    foreach ($tareas as $tarea) {
+                        $entregables = Entregable::where('tarea_id',"".$tarea->id)->get();
+                        if(sizeof($entregables) > 0)
+                        {
+                            $count++;
+                        }
+                    }
+
+                    //calculo
+                    $total = 0;
+                    $count_Tareas = sizeof($tareas);
+                    if($count_Tareas){
+                        $total = ($count*100)/$count_Tareas;
+                    }
+
+                    $hito_modificado = Hito::find($hito->id);
+                    $hito->progreso = $total;
+                    $hito->save();
+
+
+                    $count = 0;
+                }
+                //dd($estados);
+                return view('estudiante.index', compact('proyecto','estados'));
             }
-            //dd($estados);
-            return view('estudiante.index', compact('proyecto','estados'));
+            return view('Error404');
         }
         else if($user->Funcionario())
         {
@@ -95,16 +101,62 @@ class HomeController extends Controller
         else if($user->ProfesorGuia())
         {
             $proyectos = Proyecto::where('profesorguia_id', $user->id)->get();
-            return view('profesorguia.index', compact('proyectos'));
+            $usuarios= User::all();
+            $invitados = array();
+            foreach ($usuarios as $user) {
+                if($user->roles->contains('id', 6))
+                {
+                    array_push($invitados, $user);
+                }
+            }
+        
+            //dd($invitados);
+            return view('profesorguia.index', compact('proyectos','invitados'));
         }
         else if($user->profesorCurso())
         {
-            $curso = ProfesorCurso::where('profesor_id', $user->id)->get();
-            //dd($curso);
-            $proyectos = Proyecto::where('estado_id',$curso[0]['curso_id'])->get();
+            $curso = ProfesorCurso::where('profesor_id', $user->id)->first();
+            $proyectos = Proyecto::where('estado_id',$curso->curso_id)->get();
+            if($curso->curso_id == 1)
+            {
+                $name_Curso = "Formulación de Proyecto de Titulación";
+            }
+            else
+            {
+                $name_Curso = "Proyecto de Tìtulación";
+            }
             //dd($proyectos);
-            return view('profesorcurso.index',compact('proyectos'));
+            return view('profesorcurso.index',compact('proyectos','name_Curso'));
         }
+        else if($user->invitado())
+        {
+            //Buscar a que proyect esta asociado
+            $proyectosmios = InvitadoProyecto::where('persona_id',"=",$user->id)->get();
+            //$proyecto = Proyecto::find($proyecto_id->proyecto_id);
+            //dd($proyectosmios);
+
+            $proyectos_todos = Proyecto::all();
+            $proyectos = array();
+            foreach ($proyectos_todos as $proyecto) {
+                foreach ($proyectosmios as $myproyecto) {
+                    if($myproyecto->proyecto_id == $proyecto->id)
+                    {
+                        array_push($proyectos,$proyecto);
+                    }
+                }
+            }
+            //dd($proyectos);
+            if($proyectos != null)
+            {
+                return view('invitado.index',compact('proyectos'));
+            }
+            else
+            {
+                return view('Error404');
+            }
+            
+        }
+
         else
         {
             return view();

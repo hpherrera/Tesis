@@ -5,7 +5,7 @@
 <section class="content-header">
 	<h1>
 		Estudiantes
-		<small>Todos</small>
+		<small></small>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
@@ -21,9 +21,17 @@
 		{{ session('message') }}
 	</div>
 	@endif
+	<div class="box-body with-border">
+        <span class="pull-left margin-right-5">
+            <small class="label bg-purple pull-right"> <i class="fa fa-info padding-top-3"></i></small> 
+        </span>
+        <div class="note">
+            <strong>Nota:</strong> Cuando el estudiante tiene por estado Egresado, podra ver información acerca del proyecto.
+        </div>
+    </div>
 	<div class="box box-primary">
 		<div class="box-header with-border">
-			<h3 class="box-title">Todos los Estudiantes en proceso de Proyecto de Título</h3>
+			<h3 class="box-title">Todos los Estudiantes en proceso de Proyecto de Título o Egresado</h3>
 		</div>
 		<div class="box-body">
 			<table id="table" class="table table-striped">
@@ -31,22 +39,35 @@
 					<tr>
 						<th>Nombre</th>
 						<th>Email</th>
-						<th>Acciones</th>
+						<th>Estado</th>
 					</tr>
 				</thead>
 				<tbody>
 					@foreach($personas as $estudiante)
 					<tr>
-						<td>{{ $estudiante->nombre() }}</td>
+						<td>
+							@foreach ($proyectos as $proyecto)
+								@if($proyecto->estudiante_id == $estudiante->id)
+									@if($proyecto->estado->nombre() == "Egresado")
+										<a href="/proyecto/{{ $proyecto->id }}/ver" data-toggle="tooltip" title="ver información">{{ $estudiante->nombre() }}
+									@else
+										{{ $estudiante->nombre() }}
+									@endif
+								@endif
+							@endforeach
+						</td>
 						<td>{{ $estudiante->email }}</td>
-						<td> ver mas info y acciones a realizar </td>
+						<td>
+							@foreach ($proyectos as $proyecto)
+								@if($proyecto->estudiante_id == $estudiante->id)
+									{{ $proyecto->estado->nombre() }}
+								@endif
+							@endforeach
+						</td>
 					</tr>
 					@endforeach
 				</tbody>
 			</table>
-		</div>
-		<div class="box-footer">
-			<a href="/" class="btn btn-default btn-flat">Volver</a>
 		</div>
 	</div>
 </section>

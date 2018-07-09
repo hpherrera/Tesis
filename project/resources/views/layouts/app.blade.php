@@ -22,93 +22,99 @@
 	@include('partials.scripts')
 	@yield('script')
 	<script>
-	var ajaxCall=function(){
-		console.log("entro");
-		$.ajax({
-            type: 'POST',
-            url:'/isacepted',
-            data: {
-            '_token':"{{ csrf_token() }}",
-        	},
-            success: function(data) {
-            	console.log(data);
-            	$('#Menu_Noti').html(data.html);
-            	if(data.size > 0){
-            		$('#count_Notificaction').text(data.size.toString());
-            	}
-            	else
-            	{
-            		$('#count_Notificaction').text("");
-            	}
 
-            },
+	@if(\Auth::user()->ProfesorGuia() || \Auth::user()->Estudiante())
+	{
+		var ajaxCall=function(){
+		console.log("entro");
+			$.ajax({
+	            type: 'POST',
+	            url:'/isacepted',
+	            data: {
+	            '_token':"{{ csrf_token() }}",
+	        	},
+	            success: function(data) {
+	            	console.log(data);
+	            	$('#Menu_Noti').html(data.html);
+	            	if(data.size > 0){
+	            		$('#count_Notificaction').text(data.size.toString());
+	            	}
+	            	else
+	            	{
+	            		$('#count_Notificaction').text("");
+	            	}
+
+	            },
+			    error: function (result) {
+			        
+			    }
+	        });
+     	}
+    	interval = setInterval(ajaxCall,5000);
+
+		function stopfunction(){
+			clearInterval(interval);
+		};
+
+		function viewNotification(id){
+			console.log(id);
+			$.ajax({
+	            type: 'POST',
+	            url: "/updateNotificaction",
+	            data: {
+	                '_token':"{{ csrf_token() }}",
+	                'notification_id':id
+	            },
+	            success: function(data) {
+	            	console.log(data);
+
+	        		    $('#modalinfo .modal-body #parrafo').text(data.info);
+	        			$('#modalinfo').modal('show');
+	            },
+			    error: function (result) {
+			        $('#modalinfo .modal-body #parrafo').text("Existieron algunos errores.");
+	        		$('#modalinfo').modal('show');
+			    }
+	        });
+		};
+
+		$.ajax({
+	        type: 'POST',
+	        url:'/hitos_month',
+	        data: {
+	        '_token':"{{ csrf_token() }}",
+	    	},
+	        success: function(data) {
+	        	console.log(data);
+	        	if(data > 0){
+	        		$("#aviso").show();
+	        	}
+	        },
 		    error: function (result) {
 		        
 		    }
-        });
-     }
-    interval = setInterval(ajaxCall,5000);
+	    });
 
-	function stopfunction(){
-		clearInterval(interval);
-	};
-
-
-	function viewNotification(id){
-		console.log(id);
-		$.ajax({
-            type: 'POST',
-            url: "/updateNotificaction",
-            data: {
-                '_token':"{{ csrf_token() }}",
-                'notification_id':id
-            },
-            success: function(data) {
-            	console.log(data);
-
-        		    $('#modalinfo .modal-body #parrafo').text(data.info);
-        			$('#modalinfo').modal('show');
-            },
+	    $.ajax({
+	        type: 'POST',
+	        url:'/reuniones_month',
+	        data: {
+	        '_token':"{{ csrf_token() }}",
+	    	},
+	        success: function(data) {
+	        	console.log(data);
+	        	if(data > 0){
+	        		$("#aviso2").show();
+	        	}
+	        },
 		    error: function (result) {
-		        $('#modalinfo .modal-body #parrafo').text("Existieron algunos errores.");
-        		$('#modalinfo').modal('show');
+		        
 		    }
-        });
-	};
+	    });
+	}
+	@endif
+	
 
-	$.ajax({
-        type: 'POST',
-        url:'/hitos_month',
-        data: {
-        '_token':"{{ csrf_token() }}",
-    	},
-        success: function(data) {
-        	console.log(data);
-        	if(data > 0){
-        		$("#aviso").show();
-        	}
-        },
-	    error: function (result) {
-	        
-	    }
-    });
-
-    $.ajax({
-        type: 'POST',
-        url:'/reuniones_month',
-        data: {
-        '_token':"{{ csrf_token() }}",
-    	},
-        success: function(data) {
-        	console.log(data);
-        	if(data > 0){
-        		$("#aviso2").show();
-        	}
-        },
-	    error: function (result) {
-	        
-	    }
-    });
 	</script>
 
 	</script>

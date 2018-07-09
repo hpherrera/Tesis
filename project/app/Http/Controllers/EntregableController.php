@@ -20,6 +20,7 @@ use File;
 use App\Mail\NotificacionTarea;
 use App\Mail\NotificacionRevisionEntregable;
 use App\Comentario;
+use App\TipoDocumento;
 
 class EntregableController extends Controller
 {
@@ -74,6 +75,7 @@ class EntregableController extends Controller
         $hitos = Hito::where('proyecto_id',"=",$proyecto[0]['id'])->get();
         $tareas = array();
         $tareas_todas = Tarea::all();
+        $tipos_entregable = TipoDocumento::all();
         foreach ($tareas_todas as $tarea) {
 
             $lastDateTarea = Carbon::parse($tarea->fecha_limite);
@@ -96,7 +98,7 @@ class EntregableController extends Controller
         }
         if(sizeof($tareas) > 0)
         {
-            return view('entregable.create2',compact('tareas'));
+            return view('entregable.create2',compact('tareas','tipos_entregable'));
         }
         else
         {
@@ -146,7 +148,8 @@ class EntregableController extends Controller
                 'estadoEntregable_id' => 4,
                 'ruta' => $carpeta."/".$uniqueFileName,
                 'id_padre' => 0,
-                'subidoPor' => 5
+                'subidoPor' => 5,
+                'tipo' =>$request['tipo_id']
             ]);
 
             //Mensaje
@@ -174,7 +177,8 @@ class EntregableController extends Controller
             ]);
 
             /* Crear mensaje y enviar notificacion */
-            Mail::to($emailProfesorGuia)->send(new NotificacionTarea($entregable));
+            $link = $request['urlorigen'].'/entregable/'.$entregable->id.'/info';
+            Mail::to($emailProfesorGuia)->send(new NotificacionTarea($entregable,$link));
 
             return redirect()->action(
                     'TareaController@info', ['tarea' => $request->tarea_id]
@@ -231,7 +235,8 @@ class EntregableController extends Controller
                 'estadoEntregable_id' => $estado,
                 'ruta' => $carpeta."/".$uniqueFileName,
                 'id_padre' => $request['entregablePadre'],
-                'subidoPor' =>$subidoPor
+                'subidoPor' =>$subidoPor,
+                'tipo' =>$request['tipo']
             ]);
 
             //Ver quien hizo el ingreso y notificar al contrario
@@ -243,22 +248,23 @@ class EntregableController extends Controller
             if($rol_persona == 3)//Profesor Guia
             {
                 //Crear Notificacion 
+                $proyecto = Hito::where('id',"=",$request['hito'])->get();
+                $estudiante_id = Proyecto::where('id',"=",$proyecto[0]['proyecto_id'])->get();
+                $eamilEstudiante = User::where('id',"=",$estudiante_id[0]['estudiante_id'])->get();
                 $tarea = Tarea::find($request['tarea']);
                 $new_entregable = Entregable::find($entregable->id);
                 Notificacion::create([
                     'texto' => 'El profesor guía '.$nombre_persona.' subio una revisión del entregable '. $entregable->nombre().'  en la tarea '.$tarea->nombre,
                     'tipo_notificacion_id' => 0,
                     'leido' => 0,
-                    'email' => auth()->user()->email
+                    'email' => $eamilEstudiante[0]['email']
                 ]); 
 
                 /* Crear mensaje y enviar notificacion */
                 //Buscar Email alumno del proyecto
-                $proyecto = Hito::where('id',"=",$request['hito'])->get();
-                $estudiante_id = Proyecto::where('id',"=",$proyecto[0]['proyecto_id'])->get();
-                $eamilEstudiante = User::where('id',"=",$estudiante_id[0]['estudiante_id'])->get();
-
-                Mail::to($eamilEstudiante[0]['email'])->send(new NotificacionRevisionEntregable($new_entregable));
+                
+                $link = $request['urlorigen'].'/entregable/'.$entregable->id.'/info';
+                Mail::to($eamilEstudiante[0]['email'])->send(new NotificacionRevisionEntregable($new_entregable,$link));
 
                 session()->flash('title', '¡Éxito!');
                 session()->flash('message', 'El documento se a subido exitosamente y se ha notificado al estudiante');
@@ -268,22 +274,23 @@ class EntregableController extends Controller
             else // Estudiante
             {
                 //Crear Notificacion 
+                //Buscar email del Profesor
+                $proyecto = Hito::where('id',"=",$request['hito'])->get();
+                $profesor_id = Proyecto::where('id',"=",$proyecto[0]['proyecto_id'])->get();
+                $emailProfesor = User::where('id',"=",$profesor_id[0]['profesorGuia_id'])->get();
+
                 $tarea = Tarea::find($request['tarea']);
                 $new_entregable = Entregable::find($entregable->id);
                 Notificacion::create([
                     'texto' => 'El estudiante '.$nombre_persona.' subio una revisión del entregable '. $entregable->nombre().'  en la tarea '.$tarea->nombre,
                     'tipo_notificacion_id' => 0,
                     'leido' => 0,
-                    'email' => auth()->user()->email
+                    'email' => $emailProfesor
                 ]);
 
                 /* Crear mensaje y enviar notificacion */
-                //Buscar email del Profesor
-                $proyecto = Hito::where('id',"=",$request['hito'])->get();
-                $profesor_id = Proyecto::where('id',"=",$proyecto[0]['proyecto_id'])->get();
-                $emailProfesor = User::where('id',"=",$profesor_id[0]['profesorGuia_id'])->get();
-
-                Mail::to($emailProfesor)->send(new NotificacionRevisionEntregable($new_entregable));
+                $link = $request['urlorigen'].'/entregable/'.$entregable->id.'/info';
+                Mail::to($emailProfesor)->send(new NotificacionRevisionEntregable($new_entregable,$link));
 
                 session()->flash('title', '¡Éxito!');
                 session()->flash('message', 'El documento se a subido exitosamente y se ha notificado al profesor guía');

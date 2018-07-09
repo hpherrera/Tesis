@@ -178,44 +178,49 @@
 
 <script>
 	$('#select-rol').on('change', function() {
-    	var id = $(this).val();
-        if(id == 4)
-        {
-            $('#curso').show();
-            $('#invitado').hide();
-            $('#carrera').hide();
-            $('#matricula').hide();
-        }
-    	else if(id == 5)
-        {
-            $("#invitado .form-control").removeAttr('required');
-            $("#carrera .form-control").removeAttr('required');
-            $("#matricula .form-control").attr('required','required');
-            $('#matricula').show();
-            $('#invitado').hide();
-            $('#carrera').hide();
-            $('#curso').hide();
-        }
-        else if(id == 6)
-        {
-            $("#invitado .form-control").attr('required','required');
-            $("#carrera .form-control").attr('required','required');
-            $('#invitado').show();
-            $('#carrera').show();
-            $("#matricula .form-control").removeAttr('required');
-            $('#matricula').hide();
-            $('#curso').hide();
-        }
-        else{
-            
-            $("#matricula .form-control").removeAttr('required');
-            $("#invitado .form-control").removeAttr('required');
-            $("#carrera .form-control").removeAttr('required');
-            $('#matricula').hide();
-            $('#invitado').hide();
-            $('#carrera').hide();
-            $('#curso').hide();
-        }
+    	var ids = $(this).val();
+        console.log("enttro:"+ids);
+
+        $.each(ids, function (index, id) {
+            console.log(id);
+            if(id == 4)
+            {
+                $('#curso').show();
+                $('#invitado').hide();
+                $('#carrera').hide();
+                $('#matricula').hide();
+            }
+            else if(id == 5)
+            {
+                $("#invitado .form-control").removeAttr('required');
+                $("#carrera .form-control").removeAttr('required');
+                $("#matricula .form-control").attr('required','required');
+                $('#matricula').show();
+                $('#invitado').hide();
+                $('#carrera').hide();
+                $('#curso').hide();
+            }
+            else if(id == 6)
+            {
+                $("#invitado .form-control").attr('required','required');
+                $("#carrera .form-control").attr('required','required');
+                $('#invitado').show();
+                $('#carrera').show();
+                $("#matricula .form-control").removeAttr('required');
+                $('#matricula').hide();
+                $('#curso').hide();
+            }
+            else{
+                
+                $("#matricula .form-control").removeAttr('required');
+                $("#invitado .form-control").removeAttr('required');
+                $("#carrera .form-control").removeAttr('required');
+                $('#matricula').hide();
+                $('#invitado').hide();
+                $('#carrera').hide();
+                $('#curso').hide();
+            }
+        });
 	});
 
 	$('#select-tipo-invitado').on('change',function(){

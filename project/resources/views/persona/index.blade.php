@@ -30,7 +30,7 @@
 					<tr>
 						<th> Nombre </th>
 						<th> Email </th>
-						<th> Rol en uso</th>
+						<th> Roles </th>
 						<th class="no-sort">Acciones</th>
 					</tr>
 				</thead>
@@ -40,23 +40,22 @@
 						<td>{{ $persona->nombre() }}</td>
 						<td>{{ $persona->email }} </td>
 						<td>
-						@if( $persona->user['rol_id'] == 1)
-							Administrados
-						@elseif($persona->user['rol_id'] == 2)
-							Funcionario
-						@elseif($persona->user['rol_id'] == 3)
-							Profesor Guía
-						@elseif($persona->user['rol_id'] == 4)
-							Profesor Curso
-						@elseif($persona->user['rol_id'] == 5)
-							Estudiante
-						@elseif($persona->user['rol_id'] == 6)
-							Invitado
-						@endif
+						@foreach($persona->user->roles as $rol)
+							{{$rol->nombre}}
+							<p></p>
+						@endforeach
 						</td>
 						<td>
-							<a href="/persona/{{ $persona->id }}/edit" class="btn btn-warning btn-xs">Editar</a>
-							<button onclick="Eliminar('{{ $persona->id }}')" class="btn btn-danger btn-xs">Eliminar</button>
+							<div class="btn-group">
+		                        <button type="button" class="btn btn-info btn-xs">Acciones</button>
+		                        <button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown">
+		                        <span class="caret"></span>
+		                        <span class="sr-only">Toggle Dropdown</span></button>
+	                        	<ul class="dropdown-menu" role="menu">
+		                        	<li><a href="/persona/{{ $persona->id }}/edit"><i class="fa fa-pencil"></i> Editar </a></li>
+		                        	<li> <a onclick="Eliminar('{{ $persona->id }}')"><i class="fa fa-remove"></i>Eliminar</a></li>
+		                        	</ul>
+                       		</div> 
 						</td>
 					</tr>
 					@endforeach

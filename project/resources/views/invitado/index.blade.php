@@ -1,58 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-
-
-	<section class="content-header">
-		<h1>
-			{{ $name_Curso }}
-			<small>Proyectos</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Todos</li>
-		</ol>
-	</section>
-
-	<section class="content">
-		@if(session('message'))
-		<div class="alert alert-{{ session('type') }} alert-dismissible">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-			<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
-			{{ session('message') }}
+<section class="content-header">
+	<h1>
+		Proyecto
+		<small>Todos</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+		<li class="active">Todos</li>
+	</ol>
+</section>
+<section class="content">
+	@if(session('message'))
+	<div class="alert alert-{{ session('type') }} alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+		<h4><i class="icon fa {{ session('icon') }}"></i> {{ session('title') }}</h4>
+		{{ session('message') }}
+	</div>
+	@endif
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<h3 class="box-title">Todos los Proyectos</h3>
 		</div>
-		@endif
-		<div class="box box-primary">
-			<div class="box-header with-border">
-				<h3 class="box-title">Todos los Proyectos</h3>
-			</div>
-			<div class="box-body">
-				<table id="table" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Título</th>
-							<th>Alumno</th>
-							<th>Tipo</th>
-							<th>Area</th>
-							<th class="no-sort">Historial de acciones</th>	
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($proyectos as $proyecto)
-						<tr>
-							<td>{{ ucfirst($proyecto->titulo) }}</td>
-							<td>{{ $proyecto->persona->nombre() }}
-							<td>{{ $proyecto->tipo->nombre() }}</td>
-							<td>{{ $proyecto->area->nombre()}}</td>
-							<!-- ME falta darle accion a ver lo que ha hacho el estudiante durante el curso con su proyecto -->
-							<td><a href="/estudiante/{{ $proyecto->id }}/info" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> ver información</a></td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
+		<div class="box-body">
+			<table id="table" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Título</th>
+						<th>Alumno</th>
+						<th>Profesor Guía</th>
+						<th>Tipo</th>
+						<th>Estado</th>
+						<th>Area</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($proyectos as $proyecto)
+					<tr>
+						<td><a href="/proyecto/{{ $proyecto->id }}/info" data-toggle="tooltip" title="ver información">{{ ucfirst($proyecto->titulo) }}</a></td>
+						<td>{{ $proyecto->nombre_estudiante }}</td>
+						<td>{{ $proyecto->profesor->nombres }} {{ $proyecto->profesor->apellidos }}</td>
+						<td>{{ $proyecto->tipo->nombre() }}</td>
+						<td>{{ $proyecto->estado->nombre() }}</td>
+						<td>{{ $proyecto->area->nombre()}}</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
 		</div>
-	</section>
+	</div>
+</section>
 
 @endsection
 

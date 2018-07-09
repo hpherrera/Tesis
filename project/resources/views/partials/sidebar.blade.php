@@ -28,12 +28,12 @@
 			</li>-->
 
 			@elseif(\Auth::user()->Funcionario())
-			<li><a href="/"><i class="fa fa-home"></i> <span>Home</span></a></li>
-			<li class="treeview">
+			<li><a href="/"><i class="fa fa-home"></i> <span>Proyectos</span></a></li>
+			<!--<li class="treeview">
 				<a href="/createoldproyect">
 					<i class="fa fa-plus"></i> <span>Agregar Proyecto</span>
 				</a>
-			</li>
+			</li>-->
 
 			<li class="treeview">
 				<a href="/estudents">
@@ -168,26 +168,13 @@
 
 			@elseif(\Auth::user()->Invitado())
 			<li >
-				<a href="#">
-					<i class="fa fa-lightbulb-o"></i> <span>Proyecto</span>
+				<a href="/">
+					<i class="fa fa-lightbulb-o"></i> <span>Proyectos</span>
 					<span class="pull-right-container">
 						
 					</span>
 				</a>
 
-			</li>
-
-			<li class="treeview">
-				<a href="#">
-					<i class="fa fa-users"></i> <span>Avance</span>
-					<span class="pull-right-container">
-						<i class="fa fa-angle-left pull-right"></i>
-					</span>
-				</a>
-				<ul class="treeview-menu">
-					<li><a href="#"><i class="fa fa-object-group"></i> Mockups </a></li>
-					<li><a href="#"><i class="fa fa-archive"></i> Documentos </a></li>
-				</ul>
 			</li>
 			@endif
 		</ul>

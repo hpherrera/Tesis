@@ -33,6 +33,7 @@
 						<th>Fecha</th>
 						<th>Tarea</th>
 						<th>Estado</th>
+						<th>Tipo</th>
 						<th class="no-sort"></th>
 					</tr>
 				</thead>
@@ -43,9 +44,17 @@
 						<td>{{ ucfirst($entregable->fecha)  }}</td>
 						<td>{{ $entregable->tarea->nombre}}</td>
                   		<td>{{ $entregable->estado->nombre  }}</td>
+                  		<td>
+                  			@if($entregable->tipo == 1)
+                  				Entregable
+                  			@else
+                  				Documento Final
+                  			@endif
+                  		</td>
 						<td>
 							<a href="/entregable/{{ $entregable->id }}/Descargar" class="btn btn-info btn-sm pull-right"><i class="fa fa-cloud-download"></i> Descargar</a>
 						</td>
+
 					</tr>
 					@endforeach
 				</tbody>

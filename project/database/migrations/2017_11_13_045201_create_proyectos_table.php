@@ -25,6 +25,7 @@ class CreateProyectosTable extends Migration
             $table->bigInteger('year')->index();
             $table->bigInteger('semestre')->index();
             $table->string('nombre_estudiante');
+            $table->bigInteger('curso_id')->index();
             $table->timestamps();
         });
     }

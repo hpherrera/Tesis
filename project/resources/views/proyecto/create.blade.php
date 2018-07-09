@@ -42,7 +42,7 @@
 						<div class="form-group has-feedback {{ $errors->has('estudiante_id') ? 'has-error': '' }}">
 							<label>Estudiante</label>
 							<select class="form-control" name="estudiante_id" id="estudiante_id">
-								<option value="" disabled selected hidden style="color: gray">Seleccione Estudiante...
+								<option value="" disabled selected hidden style="color: gray">Seleccione Estudiante...</option>
 								@foreach($personas as $persona)
 								<option value="{{ $persona['id'] }}"> {{ $persona['nombres'] }} {{ $persona['apellidos'] }}</option>
 								@endforeach
@@ -53,6 +53,13 @@
 								<strong>{{ $errors->first('estudiante_id') }}</strong>
 							</span>
 							@endif
+						</div>
+						<div class="form-group has-feedback {{ $errors->has('Curso') ? 'has-error': '' }}">
+						<label> Curso </label>
+							<select class="form-control" name="curso_id">
+								<option value="1">Formulación de Proyecto de Titulación</option>
+								<option value="2">Proyecto de Tìtulación</option>
+							</select>
 						</div>
 						<div class="form-group has-feedback {{ $errors->has('tipo_id') ? 'has-error': '' }}">
 							<label>Tipo</label>
@@ -68,7 +75,7 @@
 							@endif
 						</div>
 						<div class="form-group has-feedback {{ $errors->has('estado_id') ? 'has-error': '' }}">
-							<label>Estado</label>
+							<label>Estado Estudiante</label>
 							<select class="form-control" name="estado_id">
 								@foreach($estados as $estado)
 								<option value="{{ $estado->id }}">{{ $estado->nombre() }}</option>
@@ -80,7 +87,7 @@
 							</span>
 							@endif
 						</div>
-						<div class="form-group has-feedback {{ $errors->has('titulo') ? 'has-error': '' }}">
+						<div class="form-group has-feedback {{ $errors->has('semestre') ? 'has-error': '' }}">
 						<label> Semestre </label>
 							<select class="form-control" name="semestre">
 								<option value="1">Primero</option>
@@ -89,12 +96,8 @@
 						</div>
 
 						<div class="form-group has-feedback {{ $errors->has('estado_id') ? 'has-error': '' }}">
-							<label>Año</label>
-							<select class="form-control" name="year">
-								@foreach($years as $year)
-								<option value="{{ $year->id }}">{{ $year->anio }}</option>
-								@endforeach
-							</select>
+							<label> Año </label>
+							<input id="date_ini" name="year" class="form-control" placeholder="Año">
 							@if ($errors->has('year'))
 							<span class="help-block">
 								<strong>{{ $errors->first('year') }}</strong>
@@ -133,5 +136,16 @@
   		console.log(thisvalue);
   		$('#nombre_estudiante').val(thisvalue);
 	})
+</script>
+<script>
+	$('#date_ini').datepicker({
+		startView: 2,
+		autoclose: true,
+		language: 'es',
+		format: 'yyyy',
+		viewMode: 'years', 
+    	minViewMode: 'years',
+		orientation: 'bottom',
+	});
 </script>
 @endsection

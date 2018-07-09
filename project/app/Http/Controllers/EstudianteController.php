@@ -52,8 +52,8 @@ class EstudianteController extends Controller
                 'title' => $hito->nombre,
                 'start' => $hito->fecha_termino,
                 'description'=>'Fecha limite para terminar este hito.',
-                'color' => '#FFFF00',  
-                'textColor' => 'black'
+                'color' => '#F39C12',  
+                'textColor' => 'white'
             );
             array_push($response, $object);
         }
@@ -67,7 +67,7 @@ class EstudianteController extends Controller
                     'title' => $tarea->nombre,
                     'start' => $tarea->fecha_limite,
                     'description'=>'Tarea del hito "'.$hito->nombre.'" .',
-                    'color' => '#04B404',  
+                    'color' => '#00A65A',  
                     'textColor' => 'white'
                     );
 
@@ -84,8 +84,8 @@ class EstudianteController extends Controller
             'id' =>"",
             'title' => "Reunión",
             'start' => $reunion->fecha,
-            'description'=>'Reunión con profesor guía.',
-            'color' => '#FF3346',  
+            'description'=>'Reunión con profesor guía a las '.$reunion->hora,
+            'color' => '#DD4B39',  
             'textColor' => 'white'
             );
             array_push($response, $object);

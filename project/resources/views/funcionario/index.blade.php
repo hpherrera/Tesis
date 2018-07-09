@@ -1,19 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<<<<<<< HEAD
-
-	<section class="content-header">
-		<h1>
-			Proyecto
-			<small>Todos</small>
-		</h1>
-		<ol class="breadcrumb">
-			<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
-			<li class="active">Todos</li>
-		</ol>
-	</section>
-=======
 <section class="content-header">
 	<h1>
 		Proyecto
@@ -24,8 +11,6 @@
 		<li class="active">Todos</li>
 	</ol>
 </section>
->>>>>>> 5e39f5cd71681927f78be031f0ec321386d21d27
-
 <section class="content">
 	@if(session('message'))
 	<div class="alert alert-{{ session('type') }} alert-dismissible">
@@ -44,6 +29,7 @@
 					<tr>
 						<th>Título</th>
 						<th>Alumno</th>
+						<th>Profesor Guía</th>
 						<th>Tipo</th>
 						<th>Estado</th>
 						<th>Area</th>
@@ -53,7 +39,8 @@
 					@foreach($proyectos as $proyecto)
 					<tr>
 						<td>{{ ucfirst($proyecto->titulo) }}</td>
-						<td>{{ $proyecto->nombre_estudiante }}
+						<td>{{ $proyecto->nombre_estudiante }}</td>
+						<td>{{ $proyecto->profesor->nombres }} {{ $proyecto->profesor->apellidos }}</td>
 						<td>{{ $proyecto->tipo->nombre() }}</td>
 						<td>{{ $proyecto->estado->nombre() }}</td>
 						<td>{{ $proyecto->area->nombre()}}</td>
@@ -62,13 +49,9 @@
 				</tbody>
 			</table>
 		</div>
-<<<<<<< HEAD
-	</section>
-
-=======
 	</div>
 </section>
->>>>>>> 5e39f5cd71681927f78be031f0ec321386d21d27
+
 @endsection
 
 

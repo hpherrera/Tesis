@@ -109,7 +109,7 @@ class PersonaController extends Controller
             if($rol == 5)
             {
                 Estudiante::create([
-                    'nombre' => $request['matricula'],
+                    'matricula' => $request['matricula'],
                     'persona_id' =>(int)$id['id'],
                     'ocupado' => 0
                 ]);
@@ -180,43 +180,62 @@ class PersonaController extends Controller
         $user = User::where('email',"=",$persona->email)->first();
         $tipos = TipoInvitado::all();
         $cursos = Curso::All();
-
+        $roles_persona = $user->roles;
         $tipoInvitado = -1;
         if($user->roles->contains('id', 4)) // profesor curso
         {
             $curso = ProfesorCurso::where('profesor_id', "=", $persona->id)->first();
             $curso_id = Curso::find($curso->id);
-            //dd($curso_id);
-            return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','curso_id','cursos'));
+            $roles_persona = $user->roles;
+            //dd($roles);
+            return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','curso_id','cursos','roles_persona'));
         }
-       /* 
-        if($user[0]['rol_id'] == 5)
+       
+        if($user->roles->contains('id', 5))
         {
             //dd($persona->id);
-            $estudiante = Estudiante::where('persona_id',"=",$persona->id)->get();
+            $estudiante = Estudiante::where('persona_id',"=",$persona->id)->first();
             //dd($estudiante);
-            $matricula = $estudiante[0]['nombre'];
+            $matricula = $estudiante->matricula;
             //dd($matricula);
             $tipoInvitado = -1;
-            return view('persona.edit', compact('persona','roles','tipos','matricula','tipoInvitado','cursos'));
+            $roles_persona = $user->roles;
+            return view('persona.edit', compact('persona','roles','tipos','matricula','tipoInvitado','cursos','roles_persona'));
     
         }
 
-        if($user[0]['rol_id'] == 6)
+        if($user->roles->contains('id', 6))
         {
-            $invitado = Invitado::where('persona_id',"=",$persona->id)->get();
-            $tipoInvitado = $invitado[0]['tipo'];
-            $nombreInvitado = $invitado[0]['nombre'];
-            //dd($nombreInvitado);
-            return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','nombreInvitado','cursos'));
+            $invitado = Invitado::where('persona_id',"=",$persona->id)->first();
+            $tipoInvitado = $invitado->tipo;
+            $nombreInvitado = $invitado->nombre;
+            //dd($tipoInvitado);
+            $roles_persona = $user->roles;
+            return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','nombreInvitado','cursos','roles_persona'));
     
         }
-        */
-        return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','cursos'));
+
+        return view('persona.edit', compact('persona','roles','tipos','tipoInvitado','cursos','roles_persona'));
     }
+
 
     public function update(Request $request , $email)
     {
+        //Elimino la lista de roles que tiene el usuario
+        $persona = Persona::where('email',"=",$email)->first();
+        //dd($persona);
+        $roles = $request['rol_id'];
+
+        foreach ($roles as $rol) {
+
+            //dd($rol);
+            $user_rol = Rol::find($rol);
+
+            $user_rol->users()->detach($persona->id);
+        }
+        //buscar los roles del loco y eliminarlos pero como no lo se tabla intermedia
+        //$user_rol->users()->detach($user->id)
+
         //dd($request);
 
         $validator = Validator::make($request->all(), [
@@ -235,35 +254,28 @@ class PersonaController extends Controller
             return redirect('/create')->withErrors($validator)->withInput();
         }
 
-        $roles = $request['rol_id'];
+        $persona->nombres = $request['nombre'];
+        $persona->apellidos= $request['apellidos'];
+        $persona->save();
 
-        $user = User::find($email);
-
-        $persona = Persona::where('email',"=",$email)->get();
-        $persona[0]['nombres'] = $request['nombre'];
-        $persona[0]['apellidos']= $request['apellidos'];
-        $persona[0]->save();
-
-       
-        
         foreach ($roles as $rol ) {
-            /* Modificar los roles en la base de datos con user_roles
+            //Modificar los roles en la base de datos con user_roles
             $user_rol = Rol::find($rol);
-            $user_rol->users()->attach($user->id);*/
+            $user_rol->users()->attach($persona->id);
 
             if($rol == 4)
             {
                 
-                $profesor = ProfesorCurso::where('profesor_id',"=",$persona[0]['id'])->get();
-                $profesor[0]['curso_id'] = $request['curso_id'];
-                $profesor[0]->save();
+                $profesor = ProfesorCurso::where('profesor_id',"=",$persona->id)->first();
+                $profesor->curso_id= $request['curso_id'];
+                $profesor->save();
             }
 
             if($rol == 5)
             {
-                $estudiante = Estudiante::where('persona_id',"=",$persona[0]['id'])->get();
-                $estudiante[0]['nombre'] = $request['matricula'];
-                $estudiante[0]->save();
+                $estudiante = Estudiante::where('persona_id',"=",$persona->id)->first();
+                $estudiante->matricula = $request['matricula'];
+                $estudiante->save();
             }
 
             if($rol == 6)
@@ -272,26 +284,26 @@ class PersonaController extends Controller
                 //dd($request);
                 if($request['tipo_id'] == 1)
                 {
-                    $invitado = Invitado::where('persona_id',"=",$persona[0]['id'])->get();   
-                    $invitado[0]['nombre'] = $request['carrera'];
-                    $invitado[0]['tipo'] = 1;
-                    $invitado[0]->save();
+                    $invitado = Invitado::where('persona_id',"=",$persona->id)->first();   
+                    $invitado->nombre = $request['carrera'];
+                    $invitado->tipo= 1;
+                    $invitado->save();
                 }
 
                 if($request['tipo_id'] == 2)
                 {
-                    $invitado = Invitado::where('persona_id',"=",$persona[0]['id'])->get();
-                    $invitado[0]['nombre'] = $request['empresa'];
-                    $invitado[0]['tipo'] = 2;
-                    $invitado[0]->save();
+                    $invitado = Invitado::where('persona_id',"=",$persona->id)->first();   
+                    $invitado->nombre = $request['empresa'];
+                    $invitado->tipo= 2;
+                    $invitado->save();
                 }
 
                 if($request['tipo_id'] == 3)
                 {
-                    $invitado = Invitado::where('persona_id',"=",$persona[0]['id'])->get();
-                    $invitado[0]['nombre'] = "OTRO";
-                    $invitado[0]['tipo'] = 3;
-                    $invitado[0]->save();
+                    $invitado = Invitado::where('persona_id',"=",$persona->id)->first();   
+                    $invitado->nombre = $request['OTRO'];
+                    $invitado->tipo= 3;
+                    $invitado->save();
                 }
 
             }

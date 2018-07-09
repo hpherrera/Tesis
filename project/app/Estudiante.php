@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Estudiante extends Model
 {
-    protected $fillable = ['nombre','persona_id','ocupado'];
+    protected $fillable = ['matricula','persona_id','ocupado'];
 
     public function matricula()
     {
-        return ucfirst($this->nombre);
+        return ucfirst($this->matricula);
     }
 
     public function persona()

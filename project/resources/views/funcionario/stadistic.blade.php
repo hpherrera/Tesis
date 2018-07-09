@@ -4,7 +4,7 @@
 <section class="content-header">
 	<h1>
 		Estadisticas
-		<small>Estudiantes Activos</small>
+		<small></small>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="/"><i class="fa fa-home"></i> Home</a></li>
@@ -105,7 +105,7 @@
 		</div>
 		<div class="box-body with-border">
 			<div class="chart">
-				<canvas id="chart" height="350" width="400" ></canvas>
+				<canvas id="chart" height="350" width="400" style="display: block; width: 400px; height: 350px;" ></canvas>
 			</div>
 		</div>
 	</div>

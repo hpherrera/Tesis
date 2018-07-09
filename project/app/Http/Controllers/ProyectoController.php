@@ -84,7 +84,8 @@ class ProyectoController extends Controller
             'profesorGuia_id' => auth()->user()->id,
             'year' => $request['year'],
             'semestre' => $request['semestre'],
-            'nombre_estudiante' => $request['nombre_estudiante']
+            'nombre_estudiante' => $request['nombre_estudiante'],
+            'curso_id' => $request['curso_id']
         ]);
 
         if($request['estudiante_id'] != 0)
@@ -109,6 +110,7 @@ class ProyectoController extends Controller
         $estados = EstadoProyecto::all();
         $areas = Area::all();
 
+        //dd($proyecto);
         return view('proyecto.edit', compact('proyecto','estudiantes','tipos','estados','areas'));
     }
 
@@ -144,7 +146,7 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('/profesorguia/index');
+        return redirect('/');
     }
 
     public function delete(Proyecto $proyecto)
@@ -156,7 +158,7 @@ class ProyectoController extends Controller
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 
-        return redirect('/profesorguia/index'); 
+        return redirect('/'); 
     }
 
     public function info(Proyecto $proyecto)

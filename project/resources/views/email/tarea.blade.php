@@ -10,6 +10,8 @@ Se ha subido un nuevo entregable al sistema el {{ $entregable->fecha }}.
 - **Entregable:** {{ $entregable->nombre() }}
 - **Alumno:** {{ $entregable->tarea->hito->proyecto->persona->nombre() }}
 - **Tarea:** {{ $entregable->tarea->nombre() }}
+
+Para acceder al entregable seleccione <a href="{{$link}}">aquí</a><br>
 @endcomponent
 
 Gracias,<br>

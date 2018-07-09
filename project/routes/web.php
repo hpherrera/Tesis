@@ -77,6 +77,10 @@ Route::post('proyecto', 'ProyectoController@store');
 Route::get('reunion','ProfesorGuiaController@planificacion');
 Route::post('createreunion','ProfesorGuiaController@createreunion');
 Route::post('/tarea/reuniones','ProfesorGuiaController@show_reunion');
+Route::post('/addinvitado/{proyecto}','ProfesorGuiaController@addInvitado');
+Route::post('/updateinvitado','ProfesorGuiaController@updateInvitado');
+Route::post('/editinvitado','ProfesorGuiaController@editInvitado');
+Route::post('/removeinvitado/{proyecto}','ProfesorGuiaController@removeInvitado');
 
 //Profesor curso
 Route::get('/estudiante/{proyecto}/info', 'EstudianteController@historial');
@@ -88,6 +92,7 @@ Route::get('indexRepositorio','RepositorioController@index');
 Route::get('estudents','FuncionarioController@all_students');
 Route::get('createoldproyect','FuncionarioController@create');
 Route::get('stadistic','FuncionarioController@stadistic');
+Route::get('/proyecto/{proyecto}/ver','FuncionarioController@proyectoinfo');
 
 //Comentario
 Route::get('comentario','ComentarioController@store');

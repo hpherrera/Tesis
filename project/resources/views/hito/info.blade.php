@@ -3,7 +3,7 @@
 @section('content')
 
     <section class="content-header">
-      <h1><b>{{$hito->nombre}}</b></h1>
+      <h1>{{$hito->nombre}}</h1>
       <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
         <li class="active">Hito/{{$hito->id}}</li>
@@ -31,7 +31,7 @@
                   @foreach($tareas as $tarea)
                     <tr>
                       <td>
-                      @if(Auth::user()->rol_id == 3)
+                      @if(Auth::user()->rol_id == 3 || Auth::user()->rol_id == 6)
                         <a href="/tarea/{{ $tarea->id }}/info" data-toggle="tooltip" title="ver información">{{ ucfirst($tarea->nombre) }}</a>
                       @elseif(Auth::user()->rol_id == 5)
                         {{ ucfirst($tarea->nombre) }}

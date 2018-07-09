@@ -52,6 +52,20 @@
 							</span>
 							@endif
 						</div>
+						<div class="form-group has-feedback {{ $errors->has('tipo_id') ? 'has-error': '' }}">
+							<label>Tipo</label>
+							<select class="form-control" name="tipo_id">
+								<option value="" disabled selected hidden style="color: gray">Seleccione tipo documento...</option>
+								@foreach($tipos_entregable as $tipo)
+								<option value="{{ $tipo->id }}">{{ $tipo->nombre}}</option>
+								@endforeach
+							</select>
+							@if ($errors->has('tipo_id'))
+							<span class="help-block">
+								<strong>{{ $errors->first('tipo_id') }}</strong>
+							</span>
+							@endif
+						</div>
 						<div class="form-group">
 		                  	<label for="exampleInputFile">Archivo a subir (Formato PDF)</label>
 		                  	<input type="file" id="archivo" name="archivo" required>
@@ -59,8 +73,10 @@
 		                  	<p class="help-block">Seleccionar archivo</p>
 						</div>
 						<input type="hidden" name="hito" value="{{$tarea->hito->id}}">
+						<input type="hidden" name="urlorigen" id="url">
 					</div>
 				</div>
+			</div>
 			<div class="box-footer">
 				<button type="submit" class="btn btn-success btn-flat pull-right"><i class="fa fa-save"></i> Guardar </button>
 			</div>
@@ -69,4 +85,8 @@
 </section>
 @endsection
 @section('script')
+<script>
+	var url = window.location.origin;
+	$('#url').val(url);
+</script>
 @endsection

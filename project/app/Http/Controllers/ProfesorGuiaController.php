@@ -8,6 +8,8 @@ use App\Persona;
 use App\Estudiante;
 use App\Reunion;
 use Carbon\Carbon;
+use App\User;
+use App\InvitadoProyecto;
 
 class ProfesorGuiaController extends Controller
 {
@@ -19,8 +21,17 @@ class ProfesorGuiaController extends Controller
     public function index()
     {
     	$proyectos = Proyecto::where('profesorGuia_id',"=",auth()->user()->id)->get();
-
-    	return view('profesorguia.index',compact('proyectos'));
+        $usuarios= User::all();
+        $invitados = array();
+        foreach ($usuarios as $user) {
+            if($user->roles->contains('id', 6))
+            {
+                array_push($invitados, $user);
+            }
+        }
+        
+        dd($proyectos);
+    	return view('profesorguia.index',compact('proyectos','invitados'));
     }
 
     public function estudiantes()
@@ -105,7 +116,7 @@ class ProfesorGuiaController extends Controller
             $hora = $fecha->format('H:i');
             $object = array(
                 'id' =>$reunion->id,
-                'title' => $reunion->persona->nombres.' '.$reunion->persona->apellidos,
+                'title' =>'Reunion a las '.$hora.' con '. $reunion->persona->nombres.' '.$reunion->persona->apellidos,
                 'start' => $reunion->fecha,
                 'description'=>'Reunión a las '.$hora .'hrs.'//$reunion->hora
             );
@@ -156,6 +167,59 @@ class ProfesorGuiaController extends Controller
 
         session()->flash('title', '¡Éxito!');
         session()->flash('message', 'La reunión se ha eliminado exitosamente!');
+        session()->flash('icon', 'fa-check');
+        session()->flash('type', 'success');
+
+        return back(); 
+    }
+
+    public function addInvitado(Request $request, Proyecto $proyecto)
+    {
+        //dd($request,$proyecto);
+
+        $invitadoProyecto = InvitadoProyecto::create([
+            'persona_id' => $request['invitado_id'],
+            'proyecto_id' => $proyecto->id
+        ]);
+
+        session()->flash('title', '¡Éxito!');
+        session()->flash('message', 'La asociación del proyecto con el invitado se ha agregado exitosamente!');
+        session()->flash('icon', 'fa-check');
+        session()->flash('type', 'success');
+
+        return back(); 
+    }
+
+    public function updateInvitado(Request $request)
+    {
+        $invitado = InvitadoProyecto::where('proyecto_id',"=",$request['id'])->first();
+        return $invitado;
+    }
+
+    public function editInvitado(Request $request)
+    {
+        //dd($request);
+        $invitadoProyecto = InvitadoProyecto::where('proyecto_id',"=",$request['proyecto_id'])->first();
+        $invitadoProyecto->persona_id = $request['invitado_id'];
+
+        $invitadoProyecto->save();
+        
+        session()->flash('title', '¡Éxito!');
+        session()->flash('message', 'La asociación del proyecto con el invitado se ha modificado exitosamente!');
+        session()->flash('icon', 'fa-check');
+        session()->flash('type', 'success');
+
+        return back();
+
+    }
+
+    public function removeInvitado(Proyecto $proyecto)
+    {
+        $invitadoProyecto = InvitadoProyecto::where('proyecto_id',"=",$proyecto->id)->first();
+        $invitadoProyecto->delete();
+
+        session()->flash('title', '¡Éxito!');
+        session()->flash('message', 'La asociación del proyecto con el invitado se ha eliminado exitosamente!');
         session()->flash('icon', 'fa-check');
         session()->flash('type', 'success');
 

@@ -89,110 +89,136 @@
 						@endif
 					</div>
 				</div>
-
-				<div id="matricula" class="form-group{{ $errors->has('matricula') ? ' has-error' : '' }}" hidden>
-                    <label for="nombre" class="col-md-4 control-label">Matricula</label>
-
-                    <div class="col-md-6">
-                        @if($persona->user['rol_id']  == 5)
-                        <input id="matricula" type="text" class="form-control" name="matricula" value="{{ $matricula }}">
-                        @else
-                        <input id="matricula" type="text" class="form-control" name="matricula">
-                        @endif
-                        @if ($errors->has('matricula'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('matricula') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>	
-
-                <div id="curso" class="form-group{{ $errors->has('curso_id') ? 'has-error': '' }}" hidden>
-                    <label for="curso" class="col-md-4 control-label">Curso</label>
-                    <div class="col-md-6">
-                    @if($persona->user['rol_id']  == 4)
-                        <select class="form-control" name="curso_id" id="select-curso" ">
-                            @foreach($cursos as $curso)
-                                @if($curso_id->id == $curso->id)
-                                     <option value="{{ $curso->id }}" selected="">{{ $curso->nombre }}</option>
-                                @else
-                                     <option value="{{ $curso->id }}">{{ $curso->nombre }}</option>
-                                @endif 
-                               
-                            @endforeach
-                        </select>
-                        @if ($errors->has('curso_id'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('curso_id') }}</strong>
-                            </span>
-                        @endif
-                    @endif
-                    </div>
-                </div>
-
-                <div id="invitado" class="form-group{{ $errors->has('tipo_id') ? 'has-error': '' }}" hidden>
-					<label for="tipo" class="col-md-4 control-label">Tipo</label>
-					<div class="col-md-6">
-                        @if($rol->nombre() == "Invitado")
-						<select class="form-control" name="tipo_id" id="select-tipo-invitado" ">
-							@foreach($tipos as $tipo)
-                                @if($tipoInvitado ==  $tipo->id && $tipoInvitado != -1) 
-                                    <option value="{{ $tipo->id }}" selected>{{ $tipo->nombre() }}</option>
-                                @else
-                                    <option value="{{ $tipo->id }}">{{ $tipo->nombre() }}</option>
+                @foreach($roles_persona as $rol)
+                    @if($rol->id == 5)
+        				<div id="matricula" class="form-group{{ $errors->has('matricula') ? ' has-error' : '' }}">
+                            <label for="nombre" class="col-md-4 control-label">Matricula</label>
+                            <div class="col-md-6">
+                                <input id="matricula" type="text" class="form-control" name="matricula" value="{{ $matricula }}">
+                                @if ($errors->has('matricula'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('matricula') }}</strong>
+                                    </span>
                                 @endif
-								
-							@endforeach
-						</select>
-                        @else
-                        <select class="form-control" name="tipo_id" id="select-tipo-invitado" ">
-                            @foreach($tipos as $tipo)
-                                <option value="{{ $tipo->id }}">{{ $tipo->nombre() }}</option>
-                            @endforeach
-                        </select>
-                        @endif
-						@if ($errors->has('tipo_id'))
-							<span class="help-block">
-								<strong>{{ $errors->first('tipo_id') }}</strong>
-							</span>
-						@endif
-					</div>
-				</div>
-
-				<div id="nombre_Empresa" class="form-group{{ $errors->has('empresa') ? ' has-error' : '' }}" hidden>
-                    <label for="empresa" class="col-md-4 control-label">Empresa</label>
-
-                    <div class="col-md-6">
-                    @if($tipoInvitado ==  2 )
-                        <input id="empresa" type="text" class="form-control" name="empresa" value="{{ $nombreInvitado }}">
-                    @else
-                        <input id="empresa" type="text" class="form-control" name="empresa">
+                            </div>
+                        </div>	
                     @endif
-                    @if ($errors->has('empresa'))
+                @endforeach
+                @foreach($roles_persona as $rol)
+                    @if($rol->id == 4)
+                    <div id="nombre_curso" class="form-group{{ $errors->has('curso_id') ? 'has-error': '' }}" >
+                        <label for="curso" class="col-md-4 control-label">Curso</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="curso_id" id="select-curso" ">
+                                @foreach($cursos as $curso)
+                                    @if($curso_id->id == $curso->id)
+                                         <option value="{{ $curso->id }}" selected="">{{ $curso->nombre }}</option>
+                                    @else
+                                         <option value="{{ $curso->id }}">{{ $curso->nombre }}</option>
+                                    @endif 
+                                   
+                                @endforeach
+                            </select>
+                            @if ($errors->has('curso_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('curso_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    @else
+                    <div id="nombre_curso" class="form-group{{ $errors->has('curso_id') ? 'has-error': '' }}" hidden>
+                        <label for="curso" class="col-md-4 control-label">Curso</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="curso_id" id="select-curso" ">
+                                @foreach($cursos as $curso)
+                                    <option value="{{ $curso->id }}">{{ $curso->nombre }}</option>
+                                @endforeach
+                            </select>
+                            @if ($errors->has('curso_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('curso_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                @endforeach
+
+                @foreach($roles_persona as $rol)
+                    @if($rol->id == 6)
+                        <div id="invitado" class="form-group{{ $errors->has('tipo_id') ? 'has-error': '' }}">
+        					<label for="tipo" class="col-md-4 control-label">Tipo</label>
+        					<div class="col-md-6">
+        						<select class="form-control" name="tipo_id" id="select-tipo-invitado" ">
+        							@foreach($tipos as $tipo)
+                                        @if($tipoInvitado ==  $tipo->id && $tipoInvitado != -1) 
+                                            <option value="{{ $tipo->id }}" selected>{{ $tipo->nombre() }}</option>
+                                        @else
+                                            <option value="{{ $tipo->id }}">{{ $tipo->nombre() }}</option>
+                                        @endif
+        							@endforeach
+        						</select>
+        						@if ($errors->has('tipo_id'))
+        							<span class="help-block">
+        								<strong>{{ $errors->first('tipo_id') }}</strong>
+        							</span>
+        						@endif
+        					</div>
+        				</div>
+                    @endif  
+                @endforeach
+
+                @if($tipoInvitado !=  null && $tipoInvitado == 2 )
+                    <div id="nombre_Empresa" class="form-group{{ $errors->has('empresa') ? ' has-error' : '' }}">
+                        <label for="empresa" class="col-md-4 control-label">Empresa</label>
+
+                        <div class="col-md-6">
+                            <input id="empresa" type="text" class="form-control" name="empresa" value="{{ $nombreInvitado }}">
+                            @if ($errors->has('empresa'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('empresa') }}</strong>
                                 </span>
                             @endif
+                        </div>
                     </div>
-                </div>	
+                    <div id="carrera_nombre" class="form-group{{ $errors->has('carrera') ? ' has-error' : '' }}" hidden>
+                        <label for="carrera" class="col-md-4 control-label">Carrera</label>
+                        <div class="col-md-6">
+                            <input id="carrera" type="text" class="form-control" name="carrera">
+                             @if ($errors->has('carrera'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('carrera') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>  
+                @endif 
+                    @if($tipoInvitado !=  null && $tipoInvitado == 1 )
+                    <div id="nombre_Empresa" class="form-group{{ $errors->has('empresa') ? ' has-error' : '' }}" hidden>
+                        <label for="empresa" class="col-md-4 control-label">Empresa</label>
 
-                <div id="carrera" class="form-group{{ $errors->has('carrera') ? ' has-error' : '' }}" hidden>
-                    <label for="carrera" class="col-md-4 control-label">Carrera</label>
-
-                    <div class="col-md-6">
-                        @if($tipoInvitado ==  1)
-                        <input id="carrera" type="text" class="form-control" name="carrera" value="{{ $nombreInvitado }}">
-                        @else
-                        <input id="carrera" type="text" class="form-control" name="carrera">
-                        @endif
-                         @if ($errors->has('carrera'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('carrera') }}</strong>
-                            </span>
-                        @endif
+                        <div class="col-md-6">
+                            <input id="empresa" type="text" class="form-control" name="empresa">
+                            @if ($errors->has('empresa'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('empresa') }}</strong>
+                                </span>
+                            @endif
+                        </div>
                     </div>
-                </div>			
-
+                    <div id="carrera_nombre" class="form-group{{ $errors->has('carrera') ? ' has-error' : '' }}">
+                        <label for="carrera" class="col-md-4 control-label">Carrera</label>
+                        <div class="col-md-6">
+                            <input id="carrera" type="text" class="form-control" name="carrera" value="{{$nombreInvitado}}">
+                             @if ($errors->has('carrera'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('carrera') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>  
+                    @endif 
                 <div class="form-group">
                     <div class="col-md-6 col-md-offset-4">
                         <button type="submit" class="btn btn-warning pull-right">
@@ -209,74 +235,11 @@
 @section('script')
 
 <script>
-    @if($persona->user['rol_id'] == 5)
-    {
-        console.log("sii");
-        $("#matricula .form-control").attr('required','required');
-        $('#matricula').show();
-    }
-    @endif
-
-    @if($persona->user['rol_id'] == 6)
-    {
-        console.log("sii");
-        $('#invitado').show();
-        //$('#carrera').show();
-    }
-    @endif
-
-    @if($tipoInvitado == 2)
-    {
-        $("#nombre_Empresa .form-control").attr('required','required');
-        $('#nombre_Empresa').show();
-    }
-    @endif
-
-    @if($tipoInvitado == 1)
-    {
-        $("#carrera .form-control").attr('required','required');
-        $('#carrera').show();
-    }
-    @endif
-
-    @if($persona->user['rol_id'] == 4)
-    {
-        $('#curso').show();
-    }
-    @endif
-
 
 	$('#select-rol').on('change', function() {
-    	var id = $(this).val();
-    	if(id == 4)
+        var ids = $(this).val();
+        if(ids.length == 0)
         {
-            $('#curso').show();
-            $('#invitado').hide();
-            $('#carrera').hide();
-            $('#matricula').hide();
-        }
-        else if(id == 5)
-        {
-            $("#invitado .form-control").removeAttr('required');
-            $("#carrera .form-control").removeAttr('required');
-            $("#matricula .form-control").attr('required','required');
-            $('#matricula').show();
-            $('#invitado').hide();
-            $('#carrera').hide();
-            $('#curso').hide();
-        }
-        else if(id == 6)
-        {
-            $("#invitado .form-control").attr('required','required');
-            $("#carrera .form-control").attr('required','required');
-            $('#invitado').show();
-            $('#carrera').show();
-            $("#matricula .form-control").removeAttr('required');
-            $('#matricula').hide();
-            $('#curso').hide();
-        }
-        else{
-            
             $("#matricula .form-control").removeAttr('required');
             $("#invitado .form-control").removeAttr('required');
             $("#carrera .form-control").removeAttr('required');
@@ -285,17 +248,48 @@
             $('#carrera').hide();
             $('#curso').hide();
         }
-	});
+
+        $.each(ids, function (index, id) {
+            console.log(id);
+            if(id == 4)
+            {
+                $('#nombre_curso').show();
+                $('#invitado').hide();
+                $('#carrera').hide();
+                $('#matricula').hide();
+            }
+            else if(id == 5)
+            {
+                $("#invitado .form-control").removeAttr('required');
+                $("#carrera .form-control").removeAttr('required');
+                $("#matricula .form-control").attr('required','required');
+                $('#matricula').show();
+                $('#invitado').hide();
+                $('#carrera').hide();
+                $('#nombre_curso').hide();
+            }
+            else if(id == 6)
+            {
+                $("#invitado .form-control").attr('required','required');
+                $("#carrera .form-control").attr('required','required');
+                $('#invitado').show();
+                $('#carrera').show();
+                $("#matricula .form-control").removeAttr('required');
+                $('#matricula').hide();
+                $('#nombre_curso').hide();
+            }
+        });
+    });
 
 	$('#select-tipo-invitado').on('change',function(){
 
 		var id = $(this).val();
 		if(id == 2){
 			$('#nombre_Empresa').show();
-			$('#carrera').hide();
+			$('#carrera_nombre').hide();
 		}
 		else if( id == 1){
-			$('#carrera').show();
+			$('#carrera_nombre').show();
             $("#nombre_Empresa .form-control").removeAttr('required');
 			$('#nombre_Empresa').hide();
 

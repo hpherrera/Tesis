@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+
 	<section class="content-header">
 		<h1>
 			{{$EntregablePadre->nombre}}
@@ -32,7 +32,7 @@
 							<th>Archivo</th>
 							<th>Nombre</th>
 							<th>Fecha Envío</th>
-							<th>Revisión</th>
+							<th>Estado</th>
 							<th>Fecha Revisión</th>
 							<th>Subido por</th>
 							<th class="no-sort"></th>
@@ -82,33 +82,39 @@
 			<!-- Recorrer los comentarios -->
 			@foreach($comentarios as $comentario)
             <li>
-
-            	@if($comentario->user->rol_id == 5)
-              		<i class="fa fa-comments bg-yellow"></i>
+            	 @if($comentario->user->rol_id == 6)
+              		<i class="fa fa-comments bg-purple"></i>
               	@endif
+
+                @if($comentario->user->rol_id == 5)
+                  <i class="fa fa-comments bg-yellow"></i>
+                @endif
 
               	@if($comentario->user->rol_id == 3)
-              		<i class="fa fa-comments bg-green"></i>
+              		<i class="fa fa-comments bg-orange"></i>
               	@endif
+                  <div class="timeline-item">
+                  <h3 class="timeline-header">{{ $comentario->user_name }}
 
-              	<div class="timeline-item">
-	                <span class="time"><i class="fa fa-clock-o"></i> {{ $comentario->created_at }} 
+                  @if($comentario->user_id == Auth::user()->id)
+                    <div class="btn-group pull-right">
+                      <span type="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i></span>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a onclick="editarComentario('{{$comentario->id}}','{{$comentario->texto}}')"><i class="fa fa-pencil"></i>Editar</a></li>
+                        <li> <a onclick="eliminarComentario('{{$comentario->id}}','{{$comentario->texto}}')"><i class="fa fa-trash"></i> Eliminar</a></li>
+                      </ul>
+                    </div> 
+                   @endif
+                  </h3>
 
-	                @if($comentario->user_id == Auth::user()->id)
-	                <!-- Funcion onclick para editar enviar -->
-	                <a onclick="editarComentario('{{$comentario->id}}','{{$comentario->texto}}')"><i class="fa fa-pencil" data-toggle="tooltip" title="" data-original-title="Editar"></i></a>
+                  <div class="timeline-body">
+                    {{ $comentario->texto }}
+                  </div>
 
-	                <!-- Funcion onclick para eliminar-->
-	                <a class="fa fa-trash" onclick="eliminarComentario('{{$comentario->id}}','{{$comentario->texto}}')" ><i data-toggle="tooltip" title="" data-original-title="Eliminar"> </i></a>
-	                @endif
-	                </span>
-
-	                <h3 class="timeline-header">{{ $comentario->user_name }}</h3>
-
-	                <div class="timeline-body">
-	                  {{ $comentario->texto }}
-	                </div>
-             	</div>
+                  <div class="timeline-footer">
+                    <p class="text-right"><span class="time"><i class="fa fa-clock-o"></i> {{ $comentario->created_at->diffForHumans() }} </span></p>
+                  </div>
+                </div>
             </li>
             @endforeach
   		</ul>
@@ -122,7 +128,7 @@
         <button type="submit" class="btn btn-primary"><i class="fa fa-comment"></i> Comentar </button>
         </form>
 	</section>
-</div>
+
 @endsection
 
 @section('modal')
@@ -145,7 +151,7 @@
 			<strong>{{ $errors->first('nombre') }}</strong>
 		</span>
 		@endif
-
+    <p></p>
 		<div class="form-group">
           	<label for="exampleInputFile">Archivo a subir (Formato PDF)</label>
           	<input type="file" id="archivo" name="archivo" required>
@@ -163,6 +169,8 @@
         <input type="hidden" name="entregablePadre" value="{{$EntregablePadre->id}}">
         <input type="hidden" name="tarea" value="{{$EntregablePadre->tarea_id}}">
         <input type="hidden" name="hito" value="{{$EntregablePadre->tarea->hito->id}}">
+        <input type="hidden" name="tipo" value="{{$EntregablePadre->tipo}}">
+        <input type="hidden" name="urlorigen" id="url">
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-success pull-left fa fa-upload"> Subir</button>
@@ -253,6 +261,18 @@
 
 @section('style')
 <link rel="stylesheet" href="{{ asset('plugins/datatables/datatables.min.css') }}"/>
+
+<style>
+  .timeline-footer {
+    padding: 5px 15px;
+    background-color:#f4f4f4;
+}
+.timeline-footer p { margin-bottom: 0; }
+.timeline-footer > a {
+    cursor: pointer;
+    text-decoration: none;
+}
+</style>
 @endsection
 
 @section('script')
@@ -265,6 +285,8 @@
 <script>
 	function subirRevision(){
 		$('#RevisionModal').modal('toggle');
+    var url = window.location.origin;
+    $('#url').val(url);
 	};
 </script>
 

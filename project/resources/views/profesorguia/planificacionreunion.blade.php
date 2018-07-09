@@ -3,7 +3,7 @@
 @section('content')
 <section class="content-header">
     <h1>
-        Planificación Reunión
+        Planificación Reuniones
     </h1>
     <ol class="breadcrumb">
         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
@@ -24,9 +24,21 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ReunionModal" class="btn btn-info btn-xs">Agregar Reunión</button>
         </div>
     </div>
+    <div class="box-body with-border">
+        <span class="pull-left margin-right-5">
+            <small class="label bg-purple pull-right"> <i class="fa fa-info padding-top-3"></i></small> 
+        </span>
+        <div class="note">
+            <strong>Nota:</strong> Para ver mas información y realizar acciones en la reunión hacer click en el dia que ha sido planificada.
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
-            <div id='calendar'></div>
+            <div class="box box-primary">
+                <div class="box-body no-padding">
+                    <div id='calendar'></div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -163,6 +175,8 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Eliminar Reunión-->
 <div class="modal fade" id="ElimnarReunion" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -193,6 +207,7 @@
  
     $(document).ready(function() { 
         $('#calendar').fullCalendar({
+            eventStartEditable: false,
             eventRender: function(eventObj, $el) {
                 $el.popover({
                     title: eventObj.title,
@@ -225,7 +240,7 @@
                 }
             },
             eventRender: function(event, element) {
-                element.html(event.title + '<span class="glyphicon glyphicon-edit pull-right" onclick=Editar('+event.id+')></span><span class="glyphicon glyphicon-remove pull-right" onclick=Eliminar('+event.id+')></span>');
+                element.html(event.title + '<span class="glyphicon glyphicon-edit pull-right" onclick=Editar('+event.id+') data-toggle="tooltip" title="Editar"></span><span class="glyphicon glyphicon-remove pull-right" onclick=Eliminar('+event.id+') data-toggle="tooltip" title="Eliminar"></span>');
             }   
         });
     });
